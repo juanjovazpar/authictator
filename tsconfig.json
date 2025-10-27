@@ -1,0 +1,21 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "sourceMap": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2015",
+    "module": "CommonJS",
+    "lib": ["ES2020", "DOM"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true,
+  },
+  "include": ["src", "src/types"],
+  "exclude": ["node_modules", "tmp", "dist"]
+}
