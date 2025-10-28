@@ -36,7 +36,7 @@ This project focuses on speed, simplicity, and security, leveraging Fastify’s 
 
 - **TypeScript:** Strongly typed JavaScript for safer and cleaner code.
 
-- **EMongoDB:** Flexible NoSQL database for user and token storage.
+- **MongoDB:** Flexible NoSQL database for user and token storage.
 
 ### Basic Configuration
 
@@ -54,7 +54,7 @@ RATE_LIMIT_MAX=100
 | --------------- | ------ | ----------------------------------------------- |
 | `/`             | GET    | Health checker.                                 |
 | `/signup`       | POST   | Create a new user                               |
-| `/sigin`        | POST   | Sign in and get a JWT token                     |
+| `/signin`       | POST   | Sign in and get a JWT token                     |
 | `/verify/{code}`| POST   | Verify user with a verification code            |
 | `/forgot`       | POST   | Request a reset password link                   |
 | `/forgot/{code}`| POST   | Reset password                                  |
