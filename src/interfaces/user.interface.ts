@@ -1,6 +1,6 @@
-import { Document } from 'mongoose';
+import { Document, Schema } from 'mongoose';
 
-export interface ICoreUser extends Document {
+export interface IUser extends Document {
   email: string;
   password: string;
   name: string;
@@ -9,4 +9,5 @@ export interface ICoreUser extends Document {
   resetPasswordToken?: string;
   last_login?: Date;
   deleted?: Date;
+  roles: Schema.Types.ObjectId[]
 }

@@ -2,7 +2,7 @@ import fastify, { FastifyRequest, FastifyReply } from 'fastify';
 
 import { comparePasswords } from '../utils';
 import { HTTP } from '../constants';
-import { ICoreUser } from '../interfaces';
+import { IUser } from '../interfaces';
 import { getUserByProperty } from '../utils/findUser.utils';
 import { TLoginInput } from '../schemas/user.schema';
 
@@ -13,7 +13,7 @@ export const signin = async function (
   res: FastifyReply,
 ): Promise<Response | void> {
   const { email, password } = req.body;
-  const user: ICoreUser | null = await getUserByProperty('email', email);
+  const user: IUser | null = await getUserByProperty('email', email);
 
   if (!user.isVerified || user.deleted) {
     res.status(HTTP.CODES.Unauthorized).send({

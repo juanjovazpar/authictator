@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 
 export default fp(async function (fastify: FastifyInstance) {
   mongoose
-    .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/authicator')
+    .connect(`${process.env.MONGO_URI || 'mongodb://localhost:27017'}/authicator`)
     .then(() => {
       fastify.log.info('Connected to MongoDB');
     })

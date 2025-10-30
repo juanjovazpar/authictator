@@ -1,10 +1,10 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { hashPassword } from '../utils';
 import { PARAMS, HTTP } from '../constants';
-import { ICoreUser } from '../interfaces';
+import { IUser } from '../interfaces';
 import User from '../models/user.model';
 import { getUserByProperty } from '../utils/findUser.utils';
-import { TNameInput, TUserInput } from '../schemas/user.schema';
+import { TUserInput } from '../schemas/user.schema';
 
 export const register = async (
   req: FastifyRequest<{ Body: TUserInput }>,
@@ -12,7 +12,7 @@ export const register = async (
 ): Promise<Response | void> => {
   const { email, password, name } = req.body;
 
-  const newUser: ICoreUser = new User({
+  const newUser: IUser = new User({
     name: name,
     email: email,
     password: await hashPassword(password),
@@ -26,7 +26,7 @@ export const register = async (
 // TODO: Set interface for authenticated request
 export const getUser = async (req: { user: unknown }, res: FastifyReply) => {
   const { sub } = req.user as { sub: string };
-  const user: ICoreUser | null = await getUserByProperty('_id', sub);
+  const user: IUser | null = await getUserByProperty('_id', sub);
 
   res.status(HTTP.CODES.Accepted).send({ user });
 };
@@ -57,7 +57,7 @@ export const verifyUser = async (req: FastifyRequest, res: FastifyReply) => {
   const { [PARAMS.VERIFY_USER_TOKEN]: verificationToken } = req.params as {
     [PARAMS.VERIFY_USER_TOKEN]: string;
   };
-  const user: ICoreUser | null = await User.findOneAndUpdate(
+  const user: IUser | null = await User.findOneAndUpdate(
     { verificationToken },
     {
       $set: { isVerified: true },

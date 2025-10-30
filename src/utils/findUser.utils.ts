@@ -1,4 +1,4 @@
-import { ICoreUser } from '../interfaces';
+import { IUser } from '../interfaces';
 import { HTTP } from '../constants';
 import { User } from '../models';
 import { ErrorWithStatusCode } from '../interfaces';
@@ -6,8 +6,8 @@ import { ErrorWithStatusCode } from '../interfaces';
 export const getUserByProperty = async (
   propertyName: string,
   propertyValue: string,
-): Promise<ICoreUser> => {
-  const user: ICoreUser | null = await User.findOne({
+): Promise<IUser> => {
+  const user: IUser | null = await User.findOne({
     [propertyName]: propertyValue,
   });
 

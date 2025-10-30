@@ -1,9 +1,9 @@
 import mongoose, { Schema, Model, CallbackError } from 'mongoose';
 
-import { ICoreUser } from '../interfaces';
+import { IUser } from '../interfaces';
 import { isValidEmail, getHashedToken } from '../utils';
 
-const schema: Schema<ICoreUser> = new Schema(
+const schema: Schema<IUser> = new Schema(
   {
     email: {
       type: String,
@@ -39,6 +39,11 @@ const schema: Schema<ICoreUser> = new Schema(
     resetPasswordToken: {
       type: String,
     },
+    roles: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Role',
+      default: []
+    }],
     last_login: {
       type: Date,
     },
@@ -49,7 +54,7 @@ const schema: Schema<ICoreUser> = new Schema(
   },
 );
 
-schema.pre<ICoreUser>('save', async function (next) {
+schema.pre<IUser>('save', async function (next) {
   try {
     if (this.isNew) {
       const hashedVerificationToken = await getHashedToken();
@@ -73,10 +78,10 @@ schema.methods.toJSON = function () {
   };
 };
 
-const User: Model<ICoreUser> = mongoose.model<ICoreUser>('User', schema);
+const User: Model<IUser> = mongoose.model<IUser>('User', schema);
 
 export default User;
 
-export function findOneAndUpdate(arg0: { email: string; }, arg1: { $set: { resetPasswordToken: string; }; }, arg2: { new: boolean; }): ICoreUser | PromiseLike<ICoreUser | null> | null {
+export function findOneAndUpdate(arg0: { email: string; }, arg1: { $set: { resetPasswordToken: string; }; }, arg2: { new: boolean; }): IUser | PromiseLike<IUser | null> | null {
   throw new Error('Function not implemented.');
 }

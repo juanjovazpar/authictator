@@ -43,7 +43,7 @@ This project focuses on speed, simplicity, and security, leveraging Fastify’s 
 Create a .env file in the root directory with your configuration:
 
 ```
-MONGO_URI=mongodb://localhost:27017/authictator
+MONGO_URI=mongodb://localhost:27017
 JWT_SECRET=your_jwt_secret
 PORT=3000
 RATE_LIMIT_MAX=100

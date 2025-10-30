@@ -6,7 +6,7 @@ import {
   getHashedToken,
   hashPassword,
 } from '../utils';
-import { ICoreUser } from '../interfaces';
+import { IUser } from '../interfaces';
 import { User } from '../models';
 import { getUserByProperty } from '../utils';
 import { TEmailInput, TPasswordInput } from '../schemas';
@@ -17,7 +17,7 @@ export const forgotPassword = async (
 ): Promise<Response | void> => {
   const { email } = req.body;
   const resetPasswordToken = await getHashedToken(60 * 60 * 1000);
-  const user: ICoreUser | null = await User.findOneAndUpdate(
+  const user: IUser | null = await User.findOneAndUpdate(
     { email },
     {
       $set: { resetPasswordToken },
@@ -49,7 +49,7 @@ export const resetPassword = async (
     req.params as {
       [PARAMS.FORGOT_PASSWORD_TOKEN]: string;
     };
-  const user: ICoreUser | null = await getUserByProperty(
+  const user: IUser | null = await getUserByProperty(
     'resetPasswordToken',
     resetPasswordToken,
   );
