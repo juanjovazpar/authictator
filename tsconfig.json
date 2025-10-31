@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "esModuleInterop": true,
     "strict": true,
+    "types": ["node"]
   },
-  "include": ["src", "src/types"],
+  "include": ["src/**/*.ts", "src/types/**/*.d.ts"],
   "exclude": ["node_modules", "tmp", "dist"]
 }

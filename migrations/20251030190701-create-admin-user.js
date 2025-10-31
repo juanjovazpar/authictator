@@ -13,12 +13,15 @@ export default {
     const user = await db.collection('users').findOne({ email: adminEmail });
     if (!user) {
       const hashed = await hashPassword(adminPassword);
+      const now = new Date();
       await db.collection('users').insertOne({
         email: adminEmail,
         password: hashed,
         name: 'admin',
         roles: [],
         isVerified: true,
+        createdAt: now,
+        updatedAt: now,
       });
       console.log('✅ Admin user created');
     } else {

@@ -3,11 +3,15 @@ const enum ENDPOINTS {
     SIGNUP = '/signup',
     FORGOT = '/forgot',
     VERIFY_USER = '/verify',
+    PERMISSIONS = '/permissions',
+    ROLES = '/roles',
     WHOAMI = '/whoami',
 }
 
 export enum PARAMS {
     USER_ID = 'user_id',
+    ROLE_ID = 'role_id',
+    PERMISSION_ID = 'permission_id',
     FORGOT_PASSWORD_TOKEN = 'resetPasswordToken',
     VERIFY_USER_TOKEN = 'verificationToken',
 }
@@ -18,5 +22,9 @@ export const ROUTES = {
     VERIFY_USER: `${ENDPOINTS.VERIFY_USER}/:${PARAMS.VERIFY_USER_TOKEN}`,
     REQUEST_FORGOT_PASSWORD: ENDPOINTS.FORGOT,
     SET_PASSWORD: `${ENDPOINTS.FORGOT}/:${PARAMS.FORGOT_PASSWORD_TOKEN}`,
+    PERMISSIONS: ENDPOINTS.PERMISSIONS,
+    PERMISSION: `${ENDPOINTS.PERMISSIONS}/:${PARAMS.PERMISSION_ID}`,
+    ROLES: ENDPOINTS.ROLES,
+    ROLE: `${ENDPOINTS.ROLES}/:${PARAMS.ROLE_ID}`,
     WHOAMI: ENDPOINTS.WHOAMI,
 };

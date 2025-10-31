@@ -1,6 +1,7 @@
 import mongoose, { Schema, Model } from 'mongoose';
 
 import { IRole } from '../interfaces';
+import { permission } from 'process';
 
 const schema: Schema<IRole> = new Schema(
   {
@@ -33,6 +34,7 @@ schema.methods.toJSON = function () {
   return {
     name: obj.name,
     description: obj.description,
+    permissions: obj.permissions,
   };
 };
 

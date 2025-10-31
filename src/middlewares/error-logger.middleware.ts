@@ -29,5 +29,7 @@ export const errorHandler = async (
       .status(HTTP.CODES.InternalServerError)
       .send({ error: 'Internal Server Error' });
   }
+
+  // TODO: Abstract logger
   console.log(error);
 };

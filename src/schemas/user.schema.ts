@@ -9,7 +9,7 @@ import { isValidEmail, isValidPassword, PASSWORD_RULES } from '../utils';
 export const nameSchema = z.object({
   name: z
     .string()
-    .min(5, 'Name too short. Min 5 characters long')
+    .min(3, 'Name too short. Min 3 characters long')
     .max(50, 'Name too long. Max 50 characters long'),
 });
 export type TNameInput = z.infer<typeof nameSchema>;
@@ -55,11 +55,25 @@ export const loginSchema = emailSchema.merge(passwordSchema);
 export type TLoginInput = z.infer<typeof loginSchema>;
 
 /**
+ * Schema for validating a user's roles.
+ * Ensures the roles include at least one role.
+ * @property {Array<string>} roles - The user's roles.
+ */
+const rolesSchema = z.object({
+  roles: z
+    .array(z.string())
+    .min(1, 'Roles must have at least 1 role')
+    .optional(),
+});
+
+
+/**
  * Schema for validating complete user data.
- * Combines `loginSchema` and `nameSchema` to validate a user's name, email, and password.
+ * Combines `loginSchema` and `nameSchema` to validate a user's name, email, password and optional roles.
  * @property {string} name - The user's name.
  * @property {string} email - The user's email address.
  * @property {string} password - The user's password.
+ * @property {Array<string>} roles - The user's roles.
  */
-export const userSchema = loginSchema.merge(nameSchema);
+export const userSchema = loginSchema.extend(nameSchema.shape).extend(rolesSchema.shape);
 export type TUserInput = z.infer<typeof userSchema>;

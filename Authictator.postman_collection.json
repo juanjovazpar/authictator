@@ -1,0 +1,111 @@
+{
+	"info": {
+		"_postman_id": "399a369e-9bb7-4437-b6d4-cd8c32cd83d2",
+		"name": "Authictator",
+		"description": "A minimalist, high-performance authentication and user management service built with Fastify, TypeScript, and MongoDB.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31187681"
+	},
+	"item": [
+		{
+			"name": "Healthcheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{API_URL}}",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"juan\",\n    \"email\": \"juan@gmail.com\",\n    \"password\": \"ChangeMe1!ChangeMe1!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/signup",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"juan@gmail.com\",\n    \"password\": \"ChangeMe1!ChangeMe1!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/signin",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"juan@gmail.com\",\n    \"password\": \"ChangeMe1!ChangeMe1!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/verify/H5o7Uu1725Qwhv1cwbaes6NCgehO4NIIJ17oOF4p5gw.1762028989319",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"verify",
+						"H5o7Uu1725Qwhv1cwbaes6NCgehO4NIIJ17oOF4p5gw.1762028989319"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

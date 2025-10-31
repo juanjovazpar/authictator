@@ -11,12 +11,6 @@ export default async function (fastify: FastifyInstance) {
   fastify.route({
     method: HTTP.METHODS.POST,
     url: ROUTES.REQUEST_FORGOT_PASSWORD,
-    schema: {
-      body: {
-        type: 'object',
-        required: ['email'],
-      },
-    },
     preValidation: [getValidatorHandler(emailSchema)],
     handler: forgotPassword,
   });
@@ -30,10 +24,6 @@ export default async function (fastify: FastifyInstance) {
         properties: {
           [PARAMS.FORGOT_PASSWORD_TOKEN]: { type: 'string' },
         },
-      },
-      body: {
-        type: 'object',
-        required: ['password'],
       },
     },
     preValidation: [getValidatorHandler(passwordSchema)],

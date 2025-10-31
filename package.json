@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "A minimalist, high-performance authentication and user management service built with Fastify, TypeScript, and MongoDB.",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "serve": "nodemon --watch src --exec ts-node src/index.ts",
     "start": "npm run migrate && npm serve",
