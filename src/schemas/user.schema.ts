@@ -6,13 +6,14 @@ import { isValidEmail, isValidPassword, PASSWORD_RULES } from '../utils';
  * Ensures the name is a string and does not exceed 50 characters.
  * @property {string} name - The user's name.
  */
-export const nameSchema = z.object({
+export const userNameSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(3, 'Name too short. Min 3 characters long')
     .max(50, 'Name too long. Max 50 characters long'),
 });
-export type TNameInput = z.infer<typeof nameSchema>;
+export type TNameInput = z.infer<typeof userNameSchema>;
 
 /**
  * Schema for validating a user's email.
@@ -22,6 +23,7 @@ export type TNameInput = z.infer<typeof nameSchema>;
 export const emailSchema = z.object({
   email: z
     .string()
+    .trim()
     .min(5, 'Email too short. Min 5 characters long')
     .max(200, 'Email too long. Max 200 characters long')
     .refine((value: string) => isValidEmail(value), {
@@ -38,6 +40,7 @@ export type TEmailInput = z.infer<typeof emailSchema>;
 export const passwordSchema = z.object({
   password: z
     .string()
+    .trim()
     .max(200, 'Password too long. Max 200 characters long')
     .refine((value: string) => isValidPassword(value), {
       message: `Invalid password format: ${PASSWORD_RULES}`,
@@ -75,5 +78,5 @@ const rolesSchema = z.object({
  * @property {string} password - The user's password.
  * @property {Array<string>} roles - The user's roles.
  */
-export const userSchema = loginSchema.extend(nameSchema.shape).extend(rolesSchema.shape);
+export const userSchema = loginSchema.extend(userNameSchema.shape).extend(rolesSchema.shape);
 export type TUserInput = z.infer<typeof userSchema>;

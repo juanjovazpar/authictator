@@ -10,11 +10,11 @@ const schema: Schema<IPermission> = new Schema(
       lowercase: true,
       required: [true, 'Name is required'],
       unique: true,
+      index: true,
     },
     description: {
       type: String,
       trim: true,
-      required: [true, 'Description is required'],
     },
   },
   {

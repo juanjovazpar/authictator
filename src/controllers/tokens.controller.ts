@@ -1,12 +1,10 @@
-import fastify, { FastifyRequest, FastifyReply } from 'fastify';
+import { FastifyRequest, FastifyReply } from 'fastify';
 
 import { comparePasswords } from '../utils';
 import { HTTP } from '../constants';
 import { IUser } from '../interfaces';
 import { getUserByProperty } from '../utils/findUser.utils';
 import { TLoginInput } from '../schemas/user.schema';
-
-const Fastify = fastify()
 
 export const signin = async function (
   req: FastifyRequest<{ Body: TLoginInput }>,
@@ -36,13 +34,15 @@ export const signin = async function (
 
   // TODO: Apply MFA verification process.env.ENABLE_MFA
   // TODO: Signing users with something different than their DB id?
-  const accessToken = Fastify.jwt.sign({ sub: user._id, role: [] });
+  const accessToken = req.server.jwt.sign({ sub: user._id, role: [] });
+  // const refreshToken = req.server.refresh.sign({ sub: user._id });
 
   user.last_login = new Date();
   await user.save();
 
   res.status(HTTP.CODES.Accepted).send({
     accessToken,
+    refreshToken: 'TODO',
   });
 };
 

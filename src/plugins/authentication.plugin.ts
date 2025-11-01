@@ -9,6 +9,12 @@ export default fp(async function (fastify: FastifyInstance) {
     sign: { expiresIn: '2h' },
   });
 
+  await fastify.register(jwt, {
+    secret: process.env.JWT_REFRESH_SECRET ?? 'secret',
+    namespace: 'refresh',
+    sign: { expiresIn: '7d' },
+  });
+
   fastify.decorate(
     'authenticate',
     async function (req: FastifyRequest, res: FastifyReply) {

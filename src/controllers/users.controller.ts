@@ -13,8 +13,8 @@ export const register = async (
   const { email, password, name } = req.body;
 
   const newUser: IUser = new User({
-    name: name,
-    email: email,
+    name,
+    email,
     password: await hashPassword(password),
   });
 

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon --watch src --exec ts-node src/index.ts",
+    "serve:debug": "npm run serve -- --inspect=9229",
     "start": "npm run migrate && npm serve",
     "migrate": "npx migrate-mongo up",
     "migrate:down": "npx migrate-mongo down"

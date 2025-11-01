@@ -1,28 +1,31 @@
 import { z } from 'zod';
 
-/**
+import { permissionNameSchema } from './permission.schema';
+
+/**         
  * Schema for validating a role's name.
- * Ensures the name is a string and does not exceed 15 characters.
+ * Ensures the name is a string and does not exceed 30 characters.
  * @property {string} name - The role's name.
  */
-const nameSchema = z.object({
+const roleNameSchema = z.object({
   name: z
     .string()
     .trim()
     .min(3, 'Name too short. Min 3 characters long')
-    .max(15, 'Name too long. Max 15 characters long'),
+    .max(30, 'Name too long. Max 15 characters long'),
 });
 
 /**
  * Schema for validating a role's description.
- * Ensures the description is a string. The maximum length allowed is 30 characters.
+ * Ensures the description is a string. The maximum length allowed is 100 characters.
  * @property {string} description - The role's description.
  */
-const descriptionSchema = z.object({
+const roleDescriptionSchema = z.object({
   description: z
     .string()
+    .trim()
     .min(5, 'Description too short. Min 3 characters long')
-    .max(30, 'Description too long. Max 30 characters long')
+    .max(100, 'Description too long. Max 100 characters long')
     .optional(),
 });
 
@@ -33,16 +36,16 @@ const descriptionSchema = z.object({
  */
 const permissionsSchema = z.object({
   permissions: z
-    .array(z.string())
+    .array(permissionNameSchema)
     .min(1, 'Role must have at least 1 permission'),
 });
 
 /**
  * Schema for validating complete role data.
- * Combines `nameSchema` and `descriptionSchema` to validate an role's name and description.
+ * Combines `roleNameSchema` and `roleDescriptionSchema` to validate an role's name and description.
  * @property {string} name - The role's name.
  * @property {string} description - The role's description.
  * @property {Array<string>} permissions - The role's permissions.
  */
-export const roleSchema = nameSchema.extend(descriptionSchema.shape).extend(permissionsSchema.shape);
+export const roleSchema = roleNameSchema.extend(roleDescriptionSchema.shape).extend(permissionsSchema.shape);
 export type TRoleInput = z.infer<typeof roleSchema>;

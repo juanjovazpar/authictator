@@ -1,7 +1,6 @@
 import mongoose, { Schema, Model } from 'mongoose';
 
 import { IRole } from '../interfaces';
-import { permission } from 'process';
 
 const schema: Schema<IRole> = new Schema(
   {
@@ -11,11 +10,11 @@ const schema: Schema<IRole> = new Schema(
       lowercase: true,
       required: [true, 'Name is required'],
       unique: true,
+      index: true,
     },
     description: {
       type: String,
       trim: true,
-      required: [true, 'Description is required'],
     },
     permissions: [{
       type: Schema.Types.ObjectId,
