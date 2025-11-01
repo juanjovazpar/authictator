@@ -2,6 +2,9 @@ import Fastify from 'fastify';
 import type { FastifyInstance } from 'fastify';
 import AutoLoad from '@fastify/autoload';
 import path from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const host: string = process.env.HOST ?? '0.0.0.0';
 const port: number = process.env.PORT ? Number(process.env.PORT) : 3000;

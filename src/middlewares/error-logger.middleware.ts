@@ -3,6 +3,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { MongoServerError } from 'mongodb';
 import mongoose from 'mongoose';
 import { ZodError } from 'zod';
+import { LITERALS } from '../constants/literals';
 
 export const errorHandler = async (
   _: FastifyRequest,
@@ -13,7 +14,7 @@ export const errorHandler = async (
     res
       .status(HTTP.CODES.BadRequest)
       .send({
-        message: 'Validaton failed',
+        message: LITERALS.VALIDATION_FAILED,
         error: error.issues.map(issue => ({ field: issue.path.join('.'), message: issue.message }))
       });
   } else if (

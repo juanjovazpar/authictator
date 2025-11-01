@@ -1,5 +1,8 @@
 import { z } from 'zod';
+import { sprintf } from 'sprintf-js';
+
 import { isValidEmail, isValidPassword, PASSWORD_RULES } from '../utils';
+import { LITERALS } from '../constants/literals';
 
 /**
  * Schema for validating a user's name.
@@ -27,7 +30,7 @@ export const emailSchema = z.object({
     .min(5, 'Email too short. Min 5 characters long')
     .max(200, 'Email too long. Max 200 characters long')
     .refine((value: string) => isValidEmail(value), {
-      message: 'Invalid email format',
+      message: LITERALS.INVALID_EMAIL_FORMAT,
     }),
 });
 export type TEmailInput = z.infer<typeof emailSchema>;
@@ -43,7 +46,7 @@ export const passwordSchema = z.object({
     .trim()
     .max(200, 'Password too long. Max 200 characters long')
     .refine((value: string) => isValidPassword(value), {
-      message: `Invalid password format: ${PASSWORD_RULES}`,
+      message: sprintf(LITERALS.INVALID_PASSWORD_FORMAT, `${PASSWORD_RULES}`),
     }),
 });
 export type TPasswordInput = z.infer<typeof passwordSchema>;
@@ -54,7 +57,7 @@ export type TPasswordInput = z.infer<typeof passwordSchema>;
  * @property {string} email - The user's email address.
  * @property {string} password - The user's password.
  */
-export const loginSchema = emailSchema.merge(passwordSchema);
+export const loginSchema = emailSchema.extend(passwordSchema.shape);
 export type TLoginInput = z.infer<typeof loginSchema>;
 
 /**
@@ -69,7 +72,6 @@ const rolesSchema = z.object({
     .optional(),
 });
 
-
 /**
  * Schema for validating complete user data.
  * Combines `loginSchema` and `nameSchema` to validate a user's name, email, password and optional roles.
@@ -78,5 +80,7 @@ const rolesSchema = z.object({
  * @property {string} password - The user's password.
  * @property {Array<string>} roles - The user's roles.
  */
-export const userSchema = loginSchema.extend(userNameSchema.shape).extend(rolesSchema.shape);
+export const userSchema = loginSchema
+  .extend(userNameSchema.shape)
+  .extend(rolesSchema.shape);
 export type TUserInput = z.infer<typeof userSchema>;

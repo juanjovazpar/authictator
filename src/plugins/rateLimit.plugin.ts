@@ -1,7 +1,10 @@
+import { sprintf } from 'sprintf-js';
+
 import { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
 import ratelimit from '@fastify/rate-limit';
 import { HTTP } from '../constants';
+import { LITERALS } from '../constants/literals';
 
 export default fp(async function (fastify: FastifyInstance) {
   await fastify.register(ratelimit, {
@@ -13,7 +16,7 @@ export default fp(async function (fastify: FastifyInstance) {
       return {
         statusCode: HTTP.CODES.TooManyRequests,
         error: 'Too Many Requests',
-        message: `You reached the ${context.max} request limit in ${context.after}. Please try again later.`,
+        message: sprintf(LITERALS.LIMIT_REACHED, context.max, context.after)
       };
     },
   });
@@ -26,7 +29,7 @@ export default fp(async function (fastify: FastifyInstance) {
         timeWindow: '1 minute',
       }),
     },
-    function (request, reply) {
+    function (_, reply) {
       reply.code(404).send({ hello: 'world' });
     },
   );

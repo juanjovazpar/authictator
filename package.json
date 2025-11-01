@@ -6,16 +6,20 @@
   "scripts": {
     "serve": "nodemon --watch src --exec ts-node src/index.ts",
     "serve:debug": "npm run serve -- --inspect=9229",
-    "start": "npm run migrate && npm serve",
+    "start": "npm run migrate && npm run serve",
     "migrate": "npx migrate-mongo up",
-    "migrate:down": "npx migrate-mongo down"
+    "migrate:down": "npx migrate-mongo down",
+    "migrate:new": "migrate-mongo create",
+    "build": "tsc"
   },
   "author": "juanjovazpar@github",
   "dependencies": {
     "crypto": "^1.0.1",
+    "dotenv": "^17.2.3",
     "geoip-lite": "^1.4.10",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.2",
+    "sprintf-js": "^1.1.3",
     "tslib": "^2.8.1",
     "zod": "^4.1.12"
   },
@@ -27,6 +31,7 @@
     "@types/geoip-lite": "^1.4.4",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.9.1",
+    "@types/sprintf-js": "^1.1.4",
     "bcryptjs": "^2.4.3",
     "fastify": "^5.6.1",
     "fastify-plugin": "~4.5.0",

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { permissionNameSchema } from './permission.schema';
+import { LITERALS } from '../constants/literals';
 
 const adminRoleName = process.env.ADMIN_ROLE_NAME || 'admin';
 
@@ -16,7 +17,7 @@ const roleNameSchema = z.object({
     .min(3, 'Name too short. Min 3 characters long')
     .max(30, 'Name too long. Max 15 characters long')
     .refine(val => val !== adminRoleName, {
-      message: `Name "${adminRoleName}" is forbidden`,
+      message: LITERALS.NAME_FORBIDDEN,
     })
 });
 

@@ -4,7 +4,8 @@ import { PARAMS, HTTP } from '../constants';
 import { IUser } from '../interfaces';
 import User from '../models/user.model';
 import { getUserByProperty } from '../utils/findUser.utils';
-import { TUserInput } from '../schemas/user.schema';
+import { TUserInput } from '../schemas';
+import { LITERALS } from '../constants/literals';
 
 export const register = async (
   req: FastifyRequest<{ Body: TUserInput }>,
@@ -20,10 +21,11 @@ export const register = async (
 
   await newUser.save();
 
-  res.status(HTTP.CODES.Created).send({ message: 'User created successfully' });
+  // TODO: Apply MFA verification process.env.ENABLE_MFA
+
+  res.status(HTTP.CODES.Created).send({ message: LITERALS.USER_CREATED });
 };
 
-// TODO: Set interface for authenticated request
 export const get = async (req: { user: unknown }, res: FastifyReply) => {
   const { sub } = req.user as { sub: string };
   const user: IUser | null = await getUserByProperty('_id', sub);
@@ -46,11 +48,11 @@ export const update = async (
   );
 
   if (!user) {
-    res.status(HTTP.CODES.BadRequest).send({ message: 'Error updating user' });
+    res.status(HTTP.CODES.BadRequest).send({ message: LITERALS.USER_UPDATING_ERROR });
     return;
   }
 
-  res.status(HTTP.CODES.Accepted).send({ message: 'User updated succesfully', payload: user });
+  res.status(HTTP.CODES.Accepted).send({ message: LITERALS.USER_UPDATED, payload: user });
 };
 
 export const verify = async (req: FastifyRequest, res: FastifyReply) => {
@@ -69,7 +71,7 @@ export const verify = async (req: FastifyRequest, res: FastifyReply) => {
   if (!user) {
     res
       .status(HTTP.CODES.BadRequest)
-      .send({ message: 'Wrong verification token' });
+      .send({ message: LITERALS.WRONG_VERIFICATION_TOKEN });
     return;
   }
 
@@ -78,5 +80,5 @@ export const verify = async (req: FastifyRequest, res: FastifyReply) => {
 
   res
     .status(HTTP.CODES.Accepted)
-    .send({ message: 'Account verified successfully' });
+    .send({ message: LITERALS.VERIFIED_ACCOUNT });
 };

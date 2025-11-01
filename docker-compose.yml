@@ -1,0 +1,31 @@
+services:
+  api:
+    build: .
+    env_file: .env
+    ports:
+      - "${PORT}:3000"
+    command: npm run start
+    volumes:
+      - .:/app 
+      - /app/node_modules
+    environment:
+      NODE_ENV: production
+      # Overwrite variable in .env
+      DATABASE_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:${DATABASE_PORT}/${DATABASE_NAME}?authSource=admin
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "${DATABASE_PORT}:27017"
+    env_file: .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

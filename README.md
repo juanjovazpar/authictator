@@ -84,7 +84,6 @@ Create a .env file in the root directory with your configuration:
 HOST=0.0.0.0
 PORT=3000
 DATABASE_URL=mongodb://localhost:27017/authictator
-DATABASE_NAME=authictator
 DATABASE_PORT=27017
 MONGO_INITDB_ROOT_USERNAME=root
 MONGO_INITDB_ROOT_PASSWORD=password

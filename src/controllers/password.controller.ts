@@ -1,6 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
 import { HTTP, PARAMS } from '../constants';
+import { LITERALS } from '../constants/literals';
+
 import {
   comparePasswords,
   getHashedToken,
@@ -28,7 +30,7 @@ export const forgotPassword = async (
   if (!user) {
     res
       .status(HTTP.CODES.NotFound)
-      .send({ message: 'User not found.' });
+      .send({ message: LITERALS.USER_NOT_FOUND });
     return;
   }
 
@@ -37,7 +39,7 @@ export const forgotPassword = async (
 
   res
     .status(HTTP.CODES.Accepted)
-    .send({ message: 'Reset password email sent successfully' });
+    .send({ message: LITERALS.RESET_PASSWORD_SENT });
 };
 
 export const resetPassword = async (
@@ -62,7 +64,7 @@ export const resetPassword = async (
   if (passwordMatch) {
     res
       .send(HTTP.CODES.BadRequest)
-      .send({ message: 'You must define a password not used before.' });
+      .send({ message: LITERALS.USED_PASSWORD_ERROR });
     return;
   }
 
@@ -77,5 +79,5 @@ export const resetPassword = async (
 
   res
     .status(HTTP.CODES.Accepted)
-    .send({ message: 'Password reset successfully' });
+    .send({ message: LITERALS.PASSWORD_RESET });
 };

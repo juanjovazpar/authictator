@@ -5,6 +5,7 @@ import { HTTP } from '../constants';
 import { IUser } from '../interfaces';
 import { getUserByProperty } from '../utils/findUser.utils';
 import { TLoginInput } from '../schemas/user.schema';
+import { LITERALS } from '../constants/literals';
 
 export const signin = async function (
   req: FastifyRequest<{ Body: TLoginInput }>,
@@ -15,7 +16,7 @@ export const signin = async function (
 
   if (!user.isVerified || !user.isActive) {
     res.status(HTTP.CODES.Unauthorized).send({
-      message: 'Authentication failed. User not verified or inactive.',
+      message: LITERALS.USER_NOT_VERIFIED,
     });
     return;
   }
@@ -28,7 +29,7 @@ export const signin = async function (
   if (!passwordMatch) {
     res
       .status(HTTP.CODES.Unauthorized)
-      .send({ message: 'Authentication failed. Incorrect password.' });
+      .send({ message: LITERALS.INCORRECT_PASSWORD });
     return;
   }
 

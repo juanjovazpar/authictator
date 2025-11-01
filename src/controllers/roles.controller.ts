@@ -1,9 +1,12 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
+import { sprintf } from 'sprintf-js';
+
 import { HTTP, PARAMS } from '../constants';
 import { IRole, IUser } from '../interfaces';
 import { TRoleInput } from '../schemas';
 import { Role, User } from '../models';
 import { ensurePermissionsExist } from '../utils/permissionsExit.utils';
+import { LITERALS } from '../constants/literals';
 
 export const create = async (
   req: FastifyRequest<{ Body: TRoleInput }>,
@@ -15,7 +18,7 @@ export const create = async (
   if (permissionsIds.length < 1) {
     res
       .status(HTTP.CODES.BadRequest)
-      .send({ message: 'Role must contains at least one permission.' });
+      .send({ message: LITERALS.ROLE_WITHOUT_PERMISSION });
     return;
   }
 
@@ -28,14 +31,14 @@ export const create = async (
   await newRole.save();
   await newRole.populate({ path: 'permissions', select: 'name' });
 
-  res.status(HTTP.CODES.Created).send({ message: 'Role created successfully', payload: newRole });
+  res.status(HTTP.CODES.Created).send({ message: LITERALS.ROLE_CREATED, payload: newRole });
 };
 
 export const list = async (_: FastifyRequest, res: FastifyReply) => {
   const payload: IRole[] = await Role
     .find({ deletedAt: null })
     .populate({ path: 'permissions', select: 'name description' });
-  res.status(HTTP.CODES.Accepted).send({ message: `${payload.length} roles found`, payload });
+  res.status(HTTP.CODES.Accepted).send({ message: sprintf(LITERALS.ROLES_FOUND_LENGTH, payload.length), payload });
 };
 
 export const update = async (
@@ -49,7 +52,7 @@ export const update = async (
   const role: IRole | null = await Role.findById(id);
 
   if (!role || role.deletedAt) {
-    res.status(HTTP.CODES.NotFound).send({ message: 'Role not found' });
+    res.status(HTTP.CODES.NotFound).send({ message: LITERALS.ROLE_NOT_FOUND });
     return;
   }
 
@@ -58,7 +61,7 @@ export const update = async (
   if (permissionsIds.length < 1) {
     res
       .status(HTTP.CODES.BadRequest)
-      .send({ message: 'Role must contains at least one permission.' });
+      .send({ message: LITERALS.ROLE_WITHOUT_PERMISSION });
     return;
   }
 
@@ -69,7 +72,7 @@ export const update = async (
   await role.save();
   await role.populate({ path: 'permissions', select: 'name' });
 
-  res.status(HTTP.CODES.Accepted).send({ message: 'Role updated succesfully', payload: role });
+  res.status(HTTP.CODES.Accepted).send({ message: LITERALS.ROLE_UPDATED, payload: role });
 };
 
 export const remove = async (req: FastifyRequest, res: FastifyReply) => {
@@ -79,19 +82,19 @@ export const remove = async (req: FastifyRequest, res: FastifyReply) => {
   const role: IRole | null = await Role.findById(id);
 
   if (!role || role.deletedAt) {
-    res.status(HTTP.CODES.NotFound).send({ message: 'Role not found' });
+    res.status(HTTP.CODES.NotFound).send({ message: LITERALS.ROLE_NOT_FOUND });
     return;
   }
 
   const users: IUser[] = await User.find({ roles: id, isActive: true });
 
   if (users.length > 1) {
-    res.status(HTTP.CODES.Conflict).send({ message: 'This role is assigned to active users. Unassign this role from users before deleting.' });
+    res.status(HTTP.CODES.Conflict).send({ message: LITERALS.ROLE_ASSIGNED_ERROR });
     return;
   }
 
   role.deletedAt = new Date();
   await role.save();
 
-  res.status(HTTP.CODES.Accepted).send({ message: 'Role deleted succesfully' });
+  res.status(HTTP.CODES.Accepted).send({ message: LITERALS.ROLE_DELETED });
 }

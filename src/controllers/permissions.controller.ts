@@ -1,8 +1,11 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
+import { sprintf } from 'sprintf-js';
+
 import { HTTP, PARAMS } from '../constants';
 import { IPermission, IRole } from '../interfaces';
 import { TPermissionInput } from '../schemas';
 import { Permission, Role } from '../models';
+import { LITERALS } from '../constants/literals';
 
 export const create = async (
   req: FastifyRequest<{ Body: TPermissionInput }>,
@@ -17,12 +20,12 @@ export const create = async (
 
   await newPermission.save();
 
-  res.status(HTTP.CODES.Created).send({ message: 'Permission created successfully', payload: newPermission });
+  res.status(HTTP.CODES.Created).send({ message: LITERALS.PERMISSION_CREATED, payload: newPermission });
 };
 
 export const list = async (_: FastifyRequest, res: FastifyReply) => {
   const payload: IPermission[] = await Permission.find({ deletedAt: null })
-  res.status(HTTP.CODES.Accepted).send({ message: `${payload.length} permissions found`, payload });
+  res.status(HTTP.CODES.Accepted).send({ message: sprintf(LITERALS.PERMISSIONS_FOUND_LENGTH, payload.length), payload });
 };
 
 export const update = async (
@@ -36,7 +39,7 @@ export const update = async (
   const permission: IPermission | null = await Permission.findById(id);
 
   if (!permission || permission.deletedAt) {
-    res.status(HTTP.CODES.NotFound).send({ message: 'Permission not found' });
+    res.status(HTTP.CODES.NotFound).send({ message: LITERALS.PERMISSION_NOT_FOUND });
     return;
   }
 
@@ -45,7 +48,7 @@ export const update = async (
 
   await permission.save();
 
-  res.status(HTTP.CODES.Accepted).send({ message: 'Permission updated succesfully', payload: permission });
+  res.status(HTTP.CODES.Accepted).send({ message: LITERALS.PERMISSION_UPDATED, payload: permission });
 };
 
 export const remove = async (req: FastifyRequest, res: FastifyReply) => {
@@ -55,19 +58,19 @@ export const remove = async (req: FastifyRequest, res: FastifyReply) => {
   const permission: IPermission | null = await Permission.findById(id);
 
   if (!permission || permission.deletedAt) {
-    res.status(HTTP.CODES.NotFound).send({ message: 'Permission not found' });
+    res.status(HTTP.CODES.NotFound).send({ message: LITERALS.PERMISSION_NOT_FOUND });
     return;
   }
 
   const roles: IRole[] = await Role.find({ permissions: id, deleteAt: null });
 
   if (roles.length > 1) {
-    res.status(HTTP.CODES.Conflict).send({ message: 'This permission is associated to active roles. Unassign this permission from roles before deleting.' });
+    res.status(HTTP.CODES.Conflict).send({ message: LITERALS.ASSOCIATED_PERMISSION_ERROR });
     return;
   }
 
   permission.deletedAt = new Date();
   await permission.save();
 
-  res.status(HTTP.CODES.Accepted).send({ message: 'Permission deleted succesfully' });
+  res.status(HTTP.CODES.Accepted).send({ message: LITERALS.PERMISSION_DELETED });
 }
