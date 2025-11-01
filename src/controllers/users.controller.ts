@@ -24,14 +24,14 @@ export const register = async (
 };
 
 // TODO: Set interface for authenticated request
-export const getUser = async (req: { user: unknown }, res: FastifyReply) => {
+export const get = async (req: { user: unknown }, res: FastifyReply) => {
   const { sub } = req.user as { sub: string };
   const user: IUser | null = await getUserByProperty('_id', sub);
 
   res.status(HTTP.CODES.Accepted).send({ user });
 };
 
-export const updateUser = async (
+export const update = async (
   req: FastifyRequest<{ Body: TUserInput }>,
   res: FastifyReply,
 ) => {
@@ -50,10 +50,10 @@ export const updateUser = async (
     return;
   }
 
-  res.status(HTTP.CODES.Accepted).send({ user });
+  res.status(HTTP.CODES.Accepted).send({ message: 'User updated succesfully', payload: user });
 };
 
-export const verifyUser = async (req: FastifyRequest, res: FastifyReply) => {
+export const verify = async (req: FastifyRequest, res: FastifyReply) => {
   const { [PARAMS.VERIFY_USER_TOKEN]: verificationToken } = req.params as {
     [PARAMS.VERIFY_USER_TOKEN]: string;
   };
