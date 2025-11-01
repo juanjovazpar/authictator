@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { HTTP, PARAMS } from '../constants';
-import { IRole } from '../interfaces';
+import { IRole, IUser } from '../interfaces';
 import { TRoleInput } from '../schemas';
-import { Role } from '../models';
+import { Role, User } from '../models';
 import { ensurePermissionsExist } from '../utils/permissionsExit.utils';
 
 export const create = async (
@@ -32,7 +32,9 @@ export const create = async (
 };
 
 export const list = async (_: FastifyRequest, res: FastifyReply) => {
-  const payload: IRole[] = await Role.find().populate({ path: 'permissions' });
+  const payload: IRole[] = await Role
+    .find({ deletedAt: null })
+    .populate({ path: 'permissions', select: 'name description' });
   res.status(HTTP.CODES.Accepted).send({ message: `${payload.length} roles found`, payload });
 };
 
@@ -46,8 +48,8 @@ export const update = async (
   const { name, description, permissions } = req.body;
   const role: IRole | null = await Role.findById(id);
 
-  if (!role) {
-    res.status(HTTP.CODES.BadRequest).send({ message: 'Role not found' });
+  if (!role || role.deletedAt) {
+    res.status(HTTP.CODES.NotFound).send({ message: 'Role not found' });
     return;
   }
 
@@ -70,3 +72,26 @@ export const update = async (
   res.status(HTTP.CODES.Accepted).send({ message: 'Role updated succesfully', payload: role });
 };
 
+export const remove = async (req: FastifyRequest, res: FastifyReply) => {
+  const { [PARAMS.ROLE_ID]: id } = req.params as {
+    [PARAMS.ROLE_ID]: string;
+  };
+  const role: IRole | null = await Role.findById(id);
+
+  if (!role || role.deletedAt) {
+    res.status(HTTP.CODES.NotFound).send({ message: 'Role not found' });
+    return;
+  }
+
+  const users: IUser[] = await User.find({ roles: id, isActive: true });
+
+  if (users.length > 1) {
+    res.status(HTTP.CODES.Conflict).send({ message: 'This role is assigned to active users. Unassign this role from users before deleting.' });
+    return;
+  }
+
+  role.deletedAt = new Date();
+  await role.save();
+
+  res.status(HTTP.CODES.Accepted).send({ message: 'Role deleted succesfully' });
+}

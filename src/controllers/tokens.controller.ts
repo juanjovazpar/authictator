@@ -13,7 +13,7 @@ export const signin = async function (
   const { email, password } = req.body;
   const user: IUser | null = await getUserByProperty('email', email);
 
-  if (!user.isVerified || user.deleted) {
+  if (!user.isVerified || !user.isActive) {
     res.status(HTTP.CODES.Unauthorized).send({
       message: 'Authentication failed. User not verified or inactive.',
     });

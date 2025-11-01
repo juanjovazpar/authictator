@@ -60,7 +60,7 @@ export const verify = async (req: FastifyRequest, res: FastifyReply) => {
   const user: IUser | null = await User.findOneAndUpdate(
     { verificationToken },
     {
-      $set: { isVerified: true },
+      $set: { isVerified: true, isActive: true },
       $unset: { verificationToken: null },
     },
     { new: true },

@@ -1,36 +1,36 @@
 import { FastifyInstance } from 'fastify';
 import { ROUTES, HTTP } from '../constants';
 import { getValidatorHandler } from '../utils';
-import { roleSchema } from '../schemas';
-import { create, list, update, remove } from '../controllers/roles.controller';
+import { permissionSchema } from '../schemas';
+import { create, list, update, remove } from '../controllers/permissions.controller';
 
 export default async function (fastify: FastifyInstance) {
   fastify.route({
     method: HTTP.METHODS.GET,
-    url: ROUTES.ROLES,
+    url: ROUTES.PERMISSIONS,
     // onRequest: fastify.authenticate, isAdmin
     handler: list,
   });
 
   fastify.route({
     method: HTTP.METHODS.POST,
-    url: ROUTES.ROLES,
-    preValidation: [getValidatorHandler(roleSchema)],
+    url: ROUTES.PERMISSIONS,
+    preValidation: [getValidatorHandler(permissionSchema)],
     // onRequest: fastify.authenticate, isAdmin
     handler: create,
   });
 
   fastify.route({
     method: HTTP.METHODS.PUT,
-    url: ROUTES.ROLE,
-    preValidation: [getValidatorHandler(roleSchema)],
+    url: ROUTES.PERMISSION,
+    preValidation: [getValidatorHandler(permissionSchema)],
     // onRequest: fastify.authenticate, isAdmin
     handler: update,
   });
 
   fastify.route({
     method: HTTP.METHODS.DELETE,
-    url: ROUTES.ROLE,
+    url: ROUTES.PERMISSION,
     // onRequest: fastify.authenticate, isAdmin
     handler: remove,
   });

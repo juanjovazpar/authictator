@@ -108,33 +108,6 @@
 			"response": []
 		},
 		{
-			"name": "Create role",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"users_manager\",\n    \"permissions\": [\"user:create\",\"user:edit\",\"user:remove\"]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://{{API_URL}}/roles",
-					"protocol": "http",
-					"host": [
-						"{{API_URL}}"
-					],
-					"path": [
-						"roles"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "List roles",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -159,6 +132,202 @@
 					],
 					"path": [
 						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create role",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"user:manager\",\n    \"permissions\": [\"user:viewer\", \"user:delete\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/roles",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit role",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"other\",\n    \"permissions\": [\"user:remove\", \"user:edit\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/roles/690608312bda013672a95c61",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"roles",
+						"690608312bda013672a95c61"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove role",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"users:updater\",\n    \"permissions\": [\"user:remove\", \"user:edit\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/roles/690608312bda013672a95c61",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"roles",
+						"690608312bda013672a95c61"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List permissions",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"users_manager\",\n    \"permissions\": [\"user:remove\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/permissions",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"permissions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create permission",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"other\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/permissions",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"permissions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit permission",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"other\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/permissions/6906075ed51c125dc813611b",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"permissions",
+						"6906075ed51c125dc813611b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove permission",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"users:updater\",\n    \"permissions\": [\"user:remove\", \"user:edit\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/permissions/690608312a751046ba64b64b",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"permissions",
+						"690608312a751046ba64b64b"
 					]
 				}
 			},

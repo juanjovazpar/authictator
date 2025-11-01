@@ -6,8 +6,8 @@ export const ensurePermissionsExist = async (permissions: string[]): Promise<Obj
     await Permission.bulkWrite(
         permissions.map(name => ({
             updateOne: {
-                filter: { name },
-                update: { $setOnInsert: { name } },
+                filter: { name, deletedAt: null },
+                update: { $setOnInsert: { name, deletedAt: null } },
                 upsert: true,
             },
         }))

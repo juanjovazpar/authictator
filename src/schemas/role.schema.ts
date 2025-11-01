@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 import { permissionNameSchema } from './permission.schema';
 
+const adminRoleName = process.env.ADMIN_ROLE_NAME || 'admin';
+
 /**         
  * Schema for validating a role's name.
  * Ensures the name is a string and does not exceed 30 characters.
@@ -12,7 +14,10 @@ const roleNameSchema = z.object({
     .string()
     .trim()
     .min(3, 'Name too short. Min 3 characters long')
-    .max(30, 'Name too long. Max 15 characters long'),
+    .max(30, 'Name too long. Max 15 characters long')
+    .refine(val => val !== adminRoleName, {
+      message: `Name "${adminRoleName}" is forbidden`,
+    })
 });
 
 /**

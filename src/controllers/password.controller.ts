@@ -27,8 +27,8 @@ export const forgotPassword = async (
 
   if (!user) {
     res
-      .status(HTTP.CODES.Unauthorized)
-      .send({ message: 'Unauthorized. User not found.' });
+      .status(HTTP.CODES.NotFound)
+      .send({ message: 'User not found.' });
     return;
   }
 

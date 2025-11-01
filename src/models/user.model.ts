@@ -3,6 +3,8 @@ import mongoose, { Schema, Model, CallbackError } from 'mongoose';
 import { IUser } from '../interfaces';
 import { isValidEmail, getHashedToken } from '../utils';
 
+const adminRoleName = process.env.ADMIN_ROLE_NAME || 'admin';
+
 const schema: Schema<IUser> = new Schema(
   {
     email: {
@@ -27,8 +29,17 @@ const schema: Schema<IUser> = new Schema(
       type: String,
       trim: true,
       required: [true, 'Name is required'],
+      validate: {
+        validator: function (value: string) { return value !== adminRoleName; },
+        message: (props) => `Name ${props.value} is forbidden for an user`,
+      }
     },
     isVerified: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    isActive: {
       type: Boolean,
       required: true,
       default: false,

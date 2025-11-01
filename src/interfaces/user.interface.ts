@@ -5,6 +5,7 @@ export interface IUser extends Document {
   password: string;
   name: string;
   isVerified: boolean;
+  isActive: boolean;
   verificationToken?: string;
   resetPasswordToken?: string;
   last_login?: Date;

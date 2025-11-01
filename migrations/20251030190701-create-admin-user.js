@@ -9,6 +9,7 @@ export default {
   async up(db) {
     const adminEmail = process.env.ADMIN_EMAIL || 'admin@email.com';
     const adminPassword = process.env.ADMIN_PASSWORD || 'password';
+    const adminRoleName = process.env.ADMIN_ROLE_NAME || 'admin';
 
     const user = await db.collection('users').findOne({ email: adminEmail });
     if (!user) {
@@ -17,9 +18,10 @@ export default {
       await db.collection('users').insertOne({
         email: adminEmail,
         password: hashed,
-        name: 'admin',
+        name: adminRoleName,
         roles: [],
         isVerified: true,
+        isActive: true,
         createdAt: now,
         updatedAt: now,
       });
