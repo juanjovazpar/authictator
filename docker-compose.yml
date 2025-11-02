@@ -1,6 +1,7 @@
 services:
   api:
     build: .
+    container_name: authictator-api
     env_file: .env
     ports:
       - "${PORT}:3000"
@@ -9,14 +10,14 @@ services:
       - .:/app 
       - /app/node_modules
     environment:
-      NODE_ENV: production
-      # Overwrite variable in .env
+      NODE_ENV: development
       DATABASE_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:${DATABASE_PORT}/${DATABASE_NAME}?authSource=admin
     depends_on:
       - mongo
 
   mongo:
     image: mongo:7
+    container_name: authictator-mongo
     restart: unless-stopped
     ports:
       - "${DATABASE_PORT}:27017"
@@ -29,3 +30,4 @@ services:
 
 volumes:
   mongo-data:
+

@@ -1,5 +1,5 @@
 export * from './findUser.utils';
-export * from './saveRequest.util';
+export * from '../middlewares/saveRequest.middleware';
 export * from './validatorHandler.util';
 export * from './password.utils';
 export * from './tokens.utils';

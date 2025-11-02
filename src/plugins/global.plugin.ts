@@ -4,8 +4,8 @@ import {
   appendStatusToResponse,
   errorHandler,
   requestLogger,
+  saveRequestDetails
 } from '../middlewares';
-import { saveRequestDetails } from '../utils/saveRequest.util';
 
 export default fp(async function (fastify: FastifyInstance) {
   fastify.addHook('onResponse', requestLogger);
