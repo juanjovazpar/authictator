@@ -14,10 +14,11 @@ services:
       DATABASE_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:${DATABASE_PORT}/${DATABASE_NAME}?authSource=admin
     depends_on:
       - mongo
+      - redis
 
   mongo:
     image: mongo:7
-    container_name: authictator-mongo
+    container_name: authictator-db
     restart: unless-stopped
     ports:
       - "${DATABASE_PORT}:27017"
@@ -28,6 +29,19 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  redis:
+    image: redis:8-alpine
+    container_name: authictator-cache
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT}:6379"
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    volumes:
+      - redis-data:/data
+
 volumes:
   mongo-data:
+  redis-data:
 

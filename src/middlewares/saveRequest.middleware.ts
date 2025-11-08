@@ -1,7 +1,7 @@
 import { RequestDetails } from "../models";
-import { FastifyRequestWithDetails } from "../interfaces";
+import { IFastifyRequestWithDetails } from "../interfaces";
 
-export const saveRequestDetails = async (req: FastifyRequestWithDetails) => {
+export const saveRequestDetails = async (req: IFastifyRequestWithDetails) => {
   const requestDetails = req['requestDetails'];
   const endpointsToExclude = ['/'];
 

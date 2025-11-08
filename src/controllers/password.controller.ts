@@ -34,6 +34,8 @@ export const forgotPassword = async (
     return;
   }
 
+  // TODO: Check if MFA is activated - Mandatory for Admins
+
   // TODO: Implement send reset password mail
   // await sendResetPasswordMail(user.email, hashedResetPasswordToken);
 

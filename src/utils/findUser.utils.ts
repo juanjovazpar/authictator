@@ -1,7 +1,7 @@
 import { IUser } from '../interfaces';
 import { HTTP } from '../constants';
 import { User } from '../models';
-import { ErrorWithStatusCode } from '../interfaces';
+import { IErrorWithStatusCode } from '../interfaces';
 
 export const getUserByProperty = async (
   propertyName: string,
@@ -12,7 +12,7 @@ export const getUserByProperty = async (
   });
 
   if (!user) {
-    const error: ErrorWithStatusCode = new Error('User not found');
+    const error: IErrorWithStatusCode = new Error('User not found');
     error['statusCode'] = HTTP.CODES.NotFound;
     throw error;
   }

@@ -6,6 +6,7 @@ const enum ENDPOINTS {
     PERMISSIONS = '/permissions',
     ROLES = '/roles',
     WHOAMI = '/whoami',
+    LOGOUT = '/logout',
 }
 
 export enum PARAMS {
@@ -27,4 +28,5 @@ export const ROUTES = {
     ROLES: ENDPOINTS.ROLES,
     ROLE: `${ENDPOINTS.ROLES}/:${PARAMS.ROLE_ID}`,
     WHOAMI: ENDPOINTS.WHOAMI,
+    LOGOUT: ENDPOINTS.LOGOUT,
 };

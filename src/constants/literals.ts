@@ -1,5 +1,6 @@
 export const LITERALS = {
   USER_NOT_FOUND: "User not found.",
+  USER_LOGOUT: "Session finished.",
   RESET_PASSWORD_SENT: "Reset password email sent successfully",
   USED_PASSWORD_ERROR: "You must define a password not used before.",
   PASSWORD_RESET: "Password reset successfully",

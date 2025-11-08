@@ -22,6 +22,9 @@ export async function register(
 
   await newUser.save();
 
+  // TODO: If role is ADMIN, set MFA
+
+  // TODO: Implement send new user mail
   // @ts-ignore
   if (req.server.sendEmail) {
     // @ts-ignore

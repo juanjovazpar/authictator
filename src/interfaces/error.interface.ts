@@ -1,3 +1,3 @@
-export interface ErrorWithStatusCode extends Error {
+export interface IErrorWithStatusCode extends Error {
     statusCode?: number;
 }
