@@ -29,5 +29,7 @@ export const LITERALS = {
   HEY_THERE: "Hey, there. I am Auth API!",
   NAME_FORBIDDEN: "This name is forbidden",
   INVALID_EMAIL_FORMAT: "Invalid email format",
-  INVALID_PASSWORD_FORMAT: `Invalid password format: %s`,
+  INVALID_PASSWORD_FORMAT: "Invalid password format: %s",
+  TOKEN_REVOKED: "Token revoked",
+  ADMIN_ROLE_REQUIRED: "Only administrators can do this!"
 }

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { comparePasswords } from '../utils';
 import { HTTP } from '../constants';
-import { IUser, ILogoutQuery } from '../interfaces';
+import { IUser } from '../interfaces';
 import { getUserByProperty } from '../utils/findUser.utils';
 import { TLoginInput } from '../schemas/user.schema';
 import { LITERALS } from '../constants/literals';
@@ -45,26 +45,25 @@ export const signin = async function (
 
   // TODO: Apply MFA verification process.env.ENABLE_MFA
   // TODO: Signing users with something different than their DB id?
-  const jwti = uuidv4();
-  const accessToken = req.server.jwt.sign({
+  const jwti: string = uuidv4();
+  const sub: string = user._id as string;
+  const accessToken: string = req.server.jwt.sign({
     jwti,
-    sub: user._id,
+    sub,
     roles: user.roles
   });
-  // TODO: Abstract decorator properly to add them into fastify object
+  // TODO: Implemente refresh token
+  // const refreshToken = req.server.refresh.sign({ sub: user._id });
+
   const cacheKey = `sessions:${user._id}:${jwti}`;
-  // @ts-ignore
   await req.server.cache.hset(cacheKey, {
-    id: user._id,
+    sub,
     name: user.name,
     email: user.email,
     roles: JSON.stringify(user.roles)
   });
-  // @ts-ignore
   // TODO: Abstract TTL to a .env variable same than token expiration time
-  await req.server.cache.expire(cacheKey, 100); // Set TTL in .env
-  // TODO: Implemente refresh token
-  // const refreshToken = req.server.refresh.sign({ sub: user._id });
+  await req.server.cache.expire(cacheKey, 10000); // Set TTL in .env
 
   user.last_login = new Date();
   await user.save();
@@ -74,37 +73,3 @@ export const signin = async function (
     refreshToken: 'TODO',
   });
 };
-
-export const logout = async function (
-  req: FastifyRequest<{ Querystring: ILogoutQuery }>,
-  res: FastifyReply,
-): Promise<Response | void> {
-  const { allsessions } = req.query;
-  const userId = req.user?.sub;
-  const jwti = req.user?.jwti;
-
-  console.log('allsessions', allsessions);
-  console.log('type allsessions', typeof allsessions);
-  console.log('userId', userId);
-  console.log('jwti', jwti);
-
-  if (!userId || !jwti) {
-    res.status(HTTP.CODES.Unauthorized).send({
-      message: LITERALS.USER_NOT_FOUND,
-    });
-    return;
-  }
-
-  if (allsessions) {
-    // @ts-ignore
-    await req.server.cache.del(`sessions:${userId}`);
-  } else {
-    // @ts-ignore
-    await req.server.cache.hdel(`sessions:${userId}`, jwti);
-  }
-
-  res.status(HTTP.CODES.Accepted).send({
-    message: LITERALS.USER_LOGOUT,
-  });
-};
-

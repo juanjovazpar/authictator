@@ -1,6 +1,8 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 import jwt from '@fastify/jwt';
+import { IUserToken } from '../interfaces';
+import { HTTP, LITERALS } from '../constants';
 
 // TODO: Implement cookie session: https://github.com/fastify/fastify-jwt?tab=readme-ov-file#default-options
 export default fp(async function (fastify: FastifyInstance) {
@@ -19,7 +21,13 @@ export default fp(async function (fastify: FastifyInstance) {
     'authenticate',
     async function (req: FastifyRequest, res: FastifyReply) {
       try {
-        await req.jwtVerify();
+        const user: IUserToken = await req.jwtVerify();
+        const cacheKey: string = `sessions:${user.sub}:${user.jwti}`;
+        const exists: number = await fastify.cache.exists(cacheKey);
+
+        if (!exists) {
+          return res.status(HTTP.CODES.Unauthorized).send({ message: LITERALS.TOKEN_REVOKED });
+        }
       } catch (err) {
         res.send(err);
       }

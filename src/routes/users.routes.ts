@@ -1,12 +1,11 @@
 import { FastifyInstance } from 'fastify';
+
 import { ROUTES, PARAMS, HTTP } from '../constants';
-import {
-  register,
-  get,
-  verify,
-} from '../controllers/users.controller';
 import { getValidatorHandler } from '../utils';
 import { userSchema } from '../schemas';
+import { whoami } from '../controllers/whoami.controller';
+import { register } from '../controllers/register.controller';
+import { verify } from '../controllers/verify.controller';
 
 export default async function (fastify: FastifyInstance) {
   fastify.route({
@@ -33,7 +32,7 @@ export default async function (fastify: FastifyInstance) {
   fastify.route({
     method: HTTP.METHODS.GET,
     url: ROUTES.WHOAMI,
-    // onRequest: fastify.authenticate,
-    handler: get,
+    onRequest: fastify.authenticate,
+    handler: whoami,
   });
 }

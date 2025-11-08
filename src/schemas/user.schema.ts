@@ -52,12 +52,22 @@ export const passwordSchema = z.object({
 export type TPasswordInput = z.infer<typeof passwordSchema>;
 
 /**
+ * Schema for validating a user's password when signing in.
+ * @property {string} password - The user's password.
+ */
+const passwordLoginSchema = z.object({
+  password: z
+    .string()
+    .trim()
+});
+
+/**
  * Schema for validating user login data.
- * Combines the `emailSchema` and `passwordSchema` to validate login credentials.
+ * Combines the `emailSchema` and `passwordLoginSchema` to validate login credentials.
  * @property {string} email - The user's email address.
  * @property {string} password - The user's password.
  */
-export const loginSchema = emailSchema.extend(passwordSchema.shape);
+export const loginSchema = emailSchema.extend(passwordLoginSchema.shape);
 export type TLoginInput = z.infer<typeof loginSchema>;
 
 /**

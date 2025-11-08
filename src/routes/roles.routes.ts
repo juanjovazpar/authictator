@@ -8,7 +8,7 @@ export default async function (fastify: FastifyInstance) {
   fastify.route({
     method: HTTP.METHODS.GET,
     url: ROUTES.ROLES,
-    // onRequest: fastify.authenticate, isAdmin
+    onRequest: [fastify.authenticate, fastify.requireAdmin],
     handler: list,
   });
 
@@ -16,7 +16,7 @@ export default async function (fastify: FastifyInstance) {
     method: HTTP.METHODS.POST,
     url: ROUTES.ROLES,
     preValidation: [getValidatorHandler(roleSchema)],
-    // onRequest: fastify.authenticate, isAdmin
+    onRequest: [fastify.authenticate, fastify.requireAdmin],
     handler: create,
   });
 
@@ -24,14 +24,14 @@ export default async function (fastify: FastifyInstance) {
     method: HTTP.METHODS.PUT,
     url: ROUTES.ROLE,
     preValidation: [getValidatorHandler(roleSchema)],
-    // onRequest: fastify.authenticate, isAdmin
+    onRequest: [fastify.authenticate, fastify.requireAdmin],
     handler: update,
   });
 
   fastify.route({
     method: HTTP.METHODS.DELETE,
     url: ROUTES.ROLE,
-    // onRequest: fastify.authenticate, isAdmin
+    onRequest: [fastify.authenticate, fastify.requireAdmin],
     handler: remove,
   });
 }

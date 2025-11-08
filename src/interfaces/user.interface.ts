@@ -12,3 +12,11 @@ export interface IUser extends Document {
   deleted?: Date;
   roles: Schema.Types.ObjectId[]
 }
+
+export interface IUserToken {
+  jwti: string,
+  sub: string,
+  roles: string[],
+  iat: number,
+  exp: number
+}

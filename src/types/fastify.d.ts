@@ -1,17 +1,15 @@
-import 'fastify';
-import { FastifyRequest, FastifyReply } from 'fastify';
+import fastify, { FastifyRequest, FastifyReply } from 'fastify';
+import Redis from 'ioredis';
+
+import { IUserToken } from '../interfaces';
 
 declare module 'fastify' {
     interface FastifyRequest {
-        user: {
-            jwti: string,
-            sub: string,
-            roles: string[],
-            iat: number,
-            exp: number
-        };
+        user: IUserToken;
     }
     interface FastifyInstance {
         authenticate: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
+        requireAdmin: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
+        cache: Redis;
     }
 }
