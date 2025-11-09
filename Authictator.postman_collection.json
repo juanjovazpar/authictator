@@ -13,10 +13,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{API_URL}}",
+					"raw": "http://{{API_URL}}/healthz",
 					"protocol": "http",
 					"host": [
 						"{{API_URL}}"
+					],
+					"path": [
+						"healthz"
 					]
 				}
 			},
@@ -29,7 +32,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"juan\",\n    \"email\": \"juan@gmail.com\",\n    \"password\": \"ChangeMe1!ChangeMe1!\"\n}",
+					"raw": "{\n    \"name\": \"new juan\",\n    \"email\": \"newemail@mail.com\",\n    \"password\": \"ChangeMe1!ChangeMe1!\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -56,7 +59,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"juan@gmail.com\",\n    \"password\": \"ChangeMe1!ChangeMe1!\"\n}",
+					"raw": "{\n    \"email\": \"juan@mail.com\",\n    \"password\": \"ChangeMe1!ChangeMe1!\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -71,6 +74,63 @@
 					],
 					"path": [
 						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signin MFA",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"998402\",\n    \"loginId\": \"39159bd2-a5aa-48fd-b2dd-9933efc612cf\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/signinmfa",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"signinmfa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/logout",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"logout"
 					]
 				}
 			},
@@ -94,14 +154,100 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{API_URL}}/verify/odVNxkwTHFIrJjLwKPMZAof8Vncrm27MofpVaIPAPsU.1762097539503",
+					"raw": "http://{{API_URL}}/whoami",
 					"protocol": "http",
 					"host": [
 						"{{API_URL}}"
 					],
 					"path": [
-						"verify",
-						"odVNxkwTHFIrJjLwKPMZAof8Vncrm27MofpVaIPAPsU.1762097539503"
+						"whoami"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Who am I?",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"juan@gmail.com\",\n    \"password\": \"ChangeMe1!ChangeMe1!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/whoami",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"whoami"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Setup MFA",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"juan@gmail.com\",\n    \"password\": \"ChangeMe1!ChangeMe1!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/mfa",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"mfa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm MFA",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"719329\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{API_URL}}/mfa",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"mfa"
 					]
 				}
 			},
@@ -144,7 +290,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"user:manager\",\n    \"permissions\": [\"user:viewer\", \"user:delete\"]\n}",
+					"raw": "{\n    \"name\": \"user:manager\",\n    \"permissions\": [\n        \"user:view\",\n        \"user:delete\",\n        \"user:edit\",\n        \"user:create\"\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -332,6 +478,40 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3RpIjoiMWNjNGM1OTQtYzc4MC00OWRjLWEzZmYtN2QwYzY5OWFmMTAzIiwic3ViIjoiNjkwNzI5ODUyZTNlMzgxMWZjNzZlZjZlIiwicm9sZXMiOltdLCJpYXQiOjE3NjI2ODUwNTUsImV4cCI6MTc2MjY5MjI1NX0.4tG2W_W5I65aK9YBfsscZuUvDAusHAH5PGWhLKoIUCM",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

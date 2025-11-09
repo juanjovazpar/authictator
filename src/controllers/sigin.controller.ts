@@ -91,10 +91,6 @@ export const mfaSignin = async function (
     return;
   }
 
-  console.log('secret', secret)
-  console.log('token', token)
-  console.log('req.body', req.body)
-
   const verified: boolean = speakeasy.totp.verify({
     encoding: 'base32',
     secret,
