@@ -5,6 +5,36 @@ import { isValidEmail, isValidPassword, PASSWORD_RULES } from '../utils';
 import { LITERALS } from '../constants/literals';
 
 /**
+ * Schema for validating a user's mfa code.
+ * Ensures the code is a string and does not exceed 6 characters.
+ * @property {string} token - The user's mfa code.
+ */
+export const userMFACodeSchema = z.object({
+  token: z
+    .string()
+    .regex(/^\d+$/, 'Only numbers are allowed for the MFA token')
+    .trim()
+    .min(6, 'Code too short. Min 6 characters long')
+    .max(6, 'Code too long. Max 6 characters long'),
+});
+export type TMFACodeInput = z.infer<typeof userMFACodeSchema>;
+
+/**
+ * Schema for validating a user's mfa code.
+ * Ensures the id is a string and does not exceed 200 characters.
+ * @property {string} id - The user's mfa id.
+ */
+export const userLoginMFASchema = z.object({
+  loginId: z
+    .string()
+    .trim()
+    .min(6, 'loginId too short. Min 6 characters long')
+    .max(200, 'loginId too long. Max 200 characters long'),
+});
+export const mfaLoginSchema = userMFACodeSchema.extend(userLoginMFASchema.shape);
+export type TMFALoginInput = z.infer<typeof mfaLoginSchema>;
+
+/**
  * Schema for validating a user's name.
  * Ensures the name is a string and does not exceed 50 characters.
  * @property {string} name - The user's name.

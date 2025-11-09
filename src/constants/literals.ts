@@ -31,5 +31,10 @@ export const LITERALS = {
   INVALID_EMAIL_FORMAT: "Invalid email format",
   INVALID_PASSWORD_FORMAT: "Invalid password format: %s",
   TOKEN_REVOKED: "Token revoked",
-  ADMIN_ROLE_REQUIRED: "Only administrators can do this!"
+  ADMIN_ROLE_REQUIRED: "Only administrators can do this!",
+  MFA_SECRET_SEND: "This is your MFA secret. Save it properly!",
+  MFA_SECRET_EXPIRED: "Your secret has expired",
+  MFA_SETUP_UNSUCCESSFULL: "Token is not verified",
+  MFA_SETUP_SUCCESSFULLY: "You MFA is properly setup now",
+  MFA_CODE_REQUIRED: "A MFA code is required"
 }

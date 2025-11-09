@@ -11,6 +11,7 @@ export interface IUser extends Document {
   last_login?: Date;
   deleted?: Date;
   roles: Schema.Types.ObjectId[]
+  mfaSecret?: string
 }
 
 export interface IUserToken {

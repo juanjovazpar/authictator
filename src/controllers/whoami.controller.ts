@@ -16,5 +16,5 @@ export async function whoami(
     return;
   }
 
-  res.status(HTTP.CODES.Accepted).send({ user });
+  res.status(HTTP.CODES.Accepted).send({ payload: user });
 };

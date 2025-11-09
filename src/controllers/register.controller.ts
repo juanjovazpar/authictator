@@ -1,4 +1,4 @@
-import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify';
+import { FastifyRequest, FastifyReply } from 'fastify';
 import { hashPassword } from '../utils';
 import { HTTP } from '../constants';
 import { IUser } from '../interfaces';
@@ -19,8 +19,6 @@ export async function register(
   });
 
   await newUser.save();
-
-  // TODO: If role is ADMIN, set MFA
 
   res.status(HTTP.CODES.Created).send({ message: LITERALS.USER_CREATED });
 

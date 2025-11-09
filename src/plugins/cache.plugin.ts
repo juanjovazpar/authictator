@@ -4,6 +4,8 @@ import Redis from 'ioredis';
 
 export default fp(async function (fastify: FastifyInstance) {
   try {
+    // TODO: Make Redis an strict cache by abstracting its methods
+    // to an implementation for this specific app
     const redis: Redis = new Redis({
       host: process.env.REDIS_HOST,
       port: Number(process.env.REDIS_PORT),

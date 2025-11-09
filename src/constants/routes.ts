@@ -1,5 +1,6 @@
 const enum ENDPOINTS {
     SIGNIN = '/signin',
+    SIGNIN_MFA = '/signinmfa',
     SIGNUP = '/signup',
     FORGOT = '/forgot',
     VERIFY_USER = '/verify',
@@ -8,6 +9,7 @@ const enum ENDPOINTS {
     WHOAMI = '/whoami',
     LOGOUT = '/logout',
     HEALTHZ = '/healthz',
+    MFA = '/mfa',
 }
 
 export enum PARAMS {
@@ -21,6 +23,7 @@ export enum PARAMS {
 export const ROUTES = {
     SIGNUP: ENDPOINTS.SIGNUP,
     SIGNIN: ENDPOINTS.SIGNIN,
+    SIGNIN_MFA: ENDPOINTS.SIGNIN_MFA,
     VERIFY_USER: `${ENDPOINTS.VERIFY_USER}/:${PARAMS.VERIFY_USER_TOKEN}`,
     REQUEST_FORGOT_PASSWORD: ENDPOINTS.FORGOT,
     SET_PASSWORD: `${ENDPOINTS.FORGOT}/:${PARAMS.FORGOT_PASSWORD_TOKEN}`,
@@ -31,4 +34,5 @@ export const ROUTES = {
     WHOAMI: ENDPOINTS.WHOAMI,
     LOGOUT: ENDPOINTS.LOGOUT,
     HEALTHZ: ENDPOINTS.HEALTHZ,
+    MFA: ENDPOINTS.MFA,
 };

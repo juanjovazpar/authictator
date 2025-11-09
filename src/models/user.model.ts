@@ -50,6 +50,9 @@ const schema: Schema<IUser> = new Schema(
     resetPasswordToken: {
       type: String,
     },
+    mfaSecret: {
+      type: String,
+    },
     roles: [{
       type: Schema.Types.ObjectId,
       ref: 'Role',

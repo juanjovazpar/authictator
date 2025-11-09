@@ -29,3 +29,5 @@ export const getJWToken =
 
       return token;
     };
+
+export const getUuid = (): string => crypto.randomUUID()

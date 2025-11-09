@@ -30,7 +30,7 @@ export default fp(async function (fastify: FastifyInstance) {
       }),
     },
     function (_, reply) {
-      reply.code(404).send({ hello: 'world' });
+      reply.code(404).send({ message: 'Hello there!' });
     },
   );
 });
