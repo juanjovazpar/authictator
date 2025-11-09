@@ -39,7 +39,9 @@ services:
       - "${REDIS_PORT}:6379"
     env_file: .env
     environment:
+      - REDIS_WRITER_USERNAME=${REDIS_WRITER_USERNAME}
       - REDIS_WRITER_PASSWORD=${REDIS_WRITER_PASSWORD}
+      - REDIS_READER_USERNAME=${REDIS_READER_USERNAME}
       - REDIS_READER_PASSWORD=${REDIS_READER_PASSWORD}
     volumes:
       - redis-data:/data
