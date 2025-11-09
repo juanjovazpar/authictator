@@ -1,5 +1,4 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { v4 as uuidv4 } from 'uuid';
 import speakeasy from 'speakeasy';
 
 import { comparePasswords, getUserByProperty, getUuid } from '../utils';
@@ -46,11 +45,12 @@ export const signin = async function (
   const loginId: string = getUuid();
   // TODO: Force always when role include the admin role
   if (FORCE_MFA) {
-    await req.server.cache.set(`blocked_logins:${loginId}`, user._id as string, 'EX', 120);
+    await req.cache.setLockedLogin(loginId, user._id as string);
     res.status(HTTP.CODES.TemporaryRedirect).send({
       message: LITERALS.MFA_CODE_REQUIRED,
       payload: loginId
     });
+    return;
   }
 
   return continueLogin(user, req, res);
@@ -62,8 +62,7 @@ export const mfaSignin = async function (
 ): Promise<Response | void> {
   // TODO: Implement calls limit for specific identifier
   const { token, loginId } = req.body;
-  const cacheKey = `blocked_logins:${loginId}`;
-  const userId: string | null = await req.server.cache.get(cacheKey);
+  const userId: string | null = await req.cache.getLockedLogin(loginId);
 
   if (!userId) {
     res.status(HTTP.CODES.NotFound).send({
@@ -92,6 +91,10 @@ export const mfaSignin = async function (
     return;
   }
 
+  console.log('secret', secret)
+  console.log('token', token)
+  console.log('req.body', req.body)
+
   const verified: boolean = speakeasy.totp.verify({
     encoding: 'base32',
     secret,
@@ -105,7 +108,7 @@ export const mfaSignin = async function (
     return;
   }
 
-  req.server.cache.del(cacheKey);
+  req.cache.delLockedLogin(loginId);
 
   return continueLogin(user, req, res);
 };
@@ -115,7 +118,7 @@ const continueLogin = async function (
   req: FastifyRequest,
   res: FastifyReply,
 ): Promise<Response | void> {
-  const jwti: string = uuidv4();
+  const jwti: string = getUuid();
   const sub = user._id
   const accessToken: string = req.server.jwt.sign({
     jwti,
@@ -123,27 +126,14 @@ const continueLogin = async function (
     roles: user.roles
   });
   // TODO: Implement refresh token
-  // const refreshToken = req.server.refresh.sign({ sub: user._id });
-  const cacheKey = `sessions:${user._id}:${jwti}`;
+  const refreshToken = req.server.jwt.sign({ sub: user._id });
 
-  await req.server.cache.hset(`sessions:${user._id}:${jwti}`, {
-    sub,
-    name: user.name,
-    email: user.email,
-    roles: JSON.stringify(user.roles)
-  });
-  // TODO: Abstract TTL to a .env variable same than token expiration time
-  await req.server.cache.expire(cacheKey, 10000); // Set TTL in .env
+  await req.cache.setSession(jwti, user);
 
   user.last_login = new Date();
   await user.save();
 
   res
     .status(HTTP.CODES.Accepted)
-    .send({
-      payload: {
-        accessToken,
-        refreshToken: 'TODO',
-      }
-    });
+    .send({ payload: { accessToken, refreshToken } });
 }

@@ -13,11 +13,12 @@ export async function confirmMFA(
 ): Promise<void> {
   const { token } = req.body;
   const userId: string = req.user?.sub;
-  const cacheKey = `mfa:${userId}`;
-  const secret = await req.server.cache.get(cacheKey);
+  const secret = await req.cache.getMFA(userId);
 
   if (!secret) {
-    res.status(HTTP.CODES.NotFound).send({ message: LITERALS.MFA_SECRET_EXPIRED });
+    res
+      .status(HTTP.CODES.NotFound)
+      .send({ message: LITERALS.MFA_SECRET_EXPIRED });
     return;
   }
 
@@ -28,7 +29,9 @@ export async function confirmMFA(
   });
 
   if (!verified) {
-    res.status(HTTP.CODES.BadRequest).send({ message: LITERALS.MFA_SETUP_UNSUCCESSFULL });
+    res
+      .status(HTTP.CODES.BadRequest)
+      .send({ message: LITERALS.MFA_SETUP_UNSUCCESSFULL });
     return;
   }
 
@@ -49,5 +52,5 @@ export async function confirmMFA(
       message: LITERALS.MFA_SETUP_SUCCESSFULLY
     });
 
-  req.server.cache.del(cacheKey);
+  req.cache.delMFA(userId);
 };

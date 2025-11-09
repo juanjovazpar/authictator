@@ -20,7 +20,7 @@ export async function setupMFA(
 
   const secret: GeneratedSecret = speakeasy.generateSecret();
 
-  await req.server.cache.set(`mfa:${userId}`, secret.base32, 'EX', 300);
+  await req.cache.setMFA(secret.base32, userId);
 
   res
     .status(HTTP.CODES.Accepted)

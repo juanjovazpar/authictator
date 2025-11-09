@@ -1,10 +1,10 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
+
 import { hashPassword } from '../utils';
-import { HTTP } from '../constants';
+import { HTTP, LITERALS } from '../constants';
 import { IUser } from '../interfaces';
-import User from '../models/user.model';
+import { User } from '../models';
 import { TUserInput } from '../schemas';
-import { LITERALS } from '../constants/literals';
 
 export async function register(
   req: FastifyRequest<{ Body: TUserInput }>,

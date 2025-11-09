@@ -19,10 +19,9 @@ export const logout = async function (
   }
 
   if (allsessions) {
-    const keys: string[] = await req.server.cache.keys(`sessions:${sub}:*`);
-    if (keys.length) await req.server.cache.del(...keys);
+    await req.cache.delSessions(sub);
   } else {
-    await req.server.cache.del(`sessions:${sub}:${jwti}`);
+    await req.cache.delSession(jwti, sub);
   }
 
   res.status(HTTP.CODES.Accepted).send({

@@ -8,6 +8,7 @@ import {
 } from '../middlewares';
 
 export default fp(async function (fastify: FastifyInstance) {
+  // Conver middlewares to plugins
   fastify.addHook('onResponse', requestLogger);
   fastify.addHook('onResponse', saveRequestDetails);
   fastify.addHook('onSend', appendStatusToResponse);

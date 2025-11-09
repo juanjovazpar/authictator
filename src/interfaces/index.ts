@@ -4,3 +4,4 @@ export * from './fastify-request.interface';
 export * from './error.interface';
 export * from './permission.interface';
 export * from './role.interface';
+export * from './cache.interface';

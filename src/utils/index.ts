@@ -4,3 +4,4 @@ export * from './validatorHandler.util';
 export * from './password.utils';
 export * from './tokens.utils';
 export * from './email.utils';
+export * from './cache.utils';
