@@ -8,7 +8,7 @@ export default fp(async function (fastify: FastifyInstance) {
     const redis: Redis = new Redis({
       host: process.env.REDIS_HOST,
       port: Number(process.env.REDIS_PORT),
-      password: process.env.REDIS_PASSWORD,
+      password: process.env.REDIS_WRITER_PASSWORD,
     });
 
     fastify.decorate(

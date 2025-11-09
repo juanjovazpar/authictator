@@ -30,16 +30,21 @@ services:
       - mongo-data:/data/db
 
   redis:
-    image: redis:8-alpine
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
     container_name: authictator-cache
     restart: unless-stopped
     ports:
       - "${REDIS_PORT}:6379"
+    env_file: .env
     environment:
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+      - REDIS_WRITER_PASSWORD=${REDIS_WRITER_PASSWORD}
+      - REDIS_READER_PASSWORD=${REDIS_READER_PASSWORD}
     volumes:
       - redis-data:/data
+      - ./redis/users-template.acl:/usr/local/etc/redis/users-template.acl
+    entrypoint: ["/usr/local/bin/redis-entrypoint.sh"]
 
 volumes:
   mongo-data:

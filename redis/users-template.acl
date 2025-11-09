@@ -1,0 +1,3 @@
+user default off
+user writer on >${REDIS_WRITER_PASSWORD} ~* +@all
+user reader on >${REDIS_READER_PASSWORD} ~sessions:* +@read

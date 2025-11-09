@@ -90,8 +90,13 @@ MONGO_INITDB_ROOT_PASSWORD=password
 JWT_REFRESH_SECRET=your_jwt_secret
 JWT_ACCESS_SECRET=your_jwt_secret
 RATE_LIMIT_MAX=10
-ENABLE_MFA=true
+FORCE_MFA=true
 ADMIN_EMAIL=admin@email.com
 ADMIN_PASSWORD=password
 ADMIN_ROLE_NAME=admin
+```
+
+Give execution access to the redis script:
+```
+chmod +x redis/redis-entrypoint.sh
 ```
