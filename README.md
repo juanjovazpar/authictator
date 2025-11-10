@@ -57,13 +57,46 @@ This project focuses on speed, simplicity, and security, leveraging Fastify’s 
 
 Protected endpoints require a valid JWT in the Authorization header.
 
-### Security
+## Roles and Permissions
 
-- All sensitive data (passwords, MFA secrets) are hashed or encrypted. 
-- Tokens include expiration and audience validation.
-- Rate limiting prevents excessive login attempts.
-- MFA adds an additional layer of identity verification.
+Authictator implements a Role-Based Access Control (RBAC) mechanism that allows fine-grained authorization of users across endpoints and services.
 
+### How It Works
+
+Permissions define what specific actions can be performed (e.g., user:read, user:update, role:create).
+
+Roles are collections of permissions. Users are assigned one or more roles.
+
+During authentication, the user’s roles are encoded into the JWT payload to facilitate stateless authorization in other services.
+
+#### Default Role
+
+Every user must have at least one role assigned.
+When a new user is created (via /signup or through an admin process), Authictator assigns the default role automatically if none is provided.
+
+This default role is defined by the environment variable:
+````
+DEFAULT_ROLE=
+````
+
+It should correspond to a role existing in the database. The initial roles and permissions are automatically seeded via the migrations.
+
+#### Admin Role
+
+An admin role is also created during the migrations process.
+This role is intended for system administration and carries all available permissions.
+
+To prevent security leaks:
+- The `admin` role cannot be assigned to users through public endpoints.
+- The role name is protected and cannot be modified or deleted.
+- The admin user, created via migrations, automatically receives this role.
+
+You can configure the admin role and credentials via the following environment variables:
+````
+ADMIN_ROLE_NAME=
+ADMIN_EMAIL=
+ADMIN_PASSWORD=
+````
 
 ## Development
 
@@ -83,7 +116,13 @@ A pretty simple layers architecture ensures the data validation and consistency 
 
 
 ### Basic Configuration
-Create a .env file in the root directory with your configuration:
+
+Execution access will be require to run the redis script:
+```
+chmod +x redis/redis-entrypoint.sh
+```
+
+Do not forget to set the environment variables in the `.env` file located in the root directory:
 
 ```
 # Basics
@@ -94,6 +133,7 @@ ADMIN_PASSWORD=
 ADMIN_ROLE_NAME=
 DEFAULT_ROLE=
 RATE_LIMIT_MAX=
+
 # Database
 DATABASE_URL=
 DATABASE_NAME=
@@ -101,14 +141,17 @@ DATABASE_PORT=
 MONGO_INITDB_ROOT_USERNAME=
 MONGO_INITDB_ROOT_PASSWORD=
 ENCRYPTION_KEY=
+
 # Force MFA to login
 FORCE_MFA=
+
 # Email sender
 SMTP_HOST=
 SMTP_PORT=
 SMTP_USER=
 SMTP_PASS=
 SMTP_FROM=
+
 # Redis
 REDIS_HOST=
 REDIS_PORT=
@@ -116,12 +159,41 @@ REDIS_WRITER_USERNAME=
 REDIS_WRITER_PASSWORD=
 REDIS_READER_USERNAME=
 REDIS_READER_PASSWORD=
+
 # JWT keys
 JWT_PRIVATE_KEY_PATH=
 JWT_PUBLIC_KEY_PATH=
 ```
 
-Give execution access to the redis script:
-```
-chmod +x redis/redis-entrypoint.sh
-```
+Initial data will be required. This data is delivered by MongoDB migrations. To run them use npm command:
+
+````
+npm run migrate
+````
+### Security
+
+- All sensitive data (passwords, MFA secrets) are hashed or encrypted. 
+- Tokens include expiration and audience validation.
+- Rate limiting prevents excessive login attempts.
+- MFA adds an additional layer of identity verification.
+
+#### Signature keys
+
+`RS256` algorithm is used to generate `public` and `private` keys. This keys will be used to sign and verify tokens. The public key will be available publicly for any client to download at `GET /.well-known/jwks.json`. This json can be used to verify the authenticity of the signature in tokens.
+
+A command to generate this keys and endpoint is available with npm:
+````
+npm run setup:keys
+````
+
+#### Redis access
+
+Redis will be use as a temporary cache to store sessions, MFA secrets candidates and locked logins process. The access to this cache is controlled by two type of users `writer` and `reader`. Readers will have access only to the sessions collection to validate the active session linked to the token.
+
+This users are configured by a template and environemnt variables. This templare is used in the redis service of the docker-compose:
+
+````
+user default off
+user ${REDIS_WRITER_USERNAME} on >${REDIS_WRITER_PASSWORD} ~* +@all
+user ${REDIS_READER_USERNAME} on >${REDIS_READER_PASSWORD} ~sessions:* +@read
+````
