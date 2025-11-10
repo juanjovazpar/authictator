@@ -5,25 +5,32 @@ import { TUserInput } from '../../schemas';
 import { LITERALS } from '../../constants/literals';
 
 export async function update(
-  req: FastifyRequest<{ Body: TUserInput }>,
-  res: FastifyReply,
+    req: FastifyRequest<{ Body: TUserInput }>,
+    res: FastifyReply,
 ): Promise<Response | void> {
-  const { name } = req.body;
-  const { sub } = req.user as { sub: string };
-  const user = await User.findByIdAndUpdate(
-    sub,
-    {
-      $set: { name },
-    },
-    { new: true },
-  );
+    const { name } = req.body;
+    const { sub } = req.user as { sub: string };
+    // Update user
+    const user = await User.findByIdAndUpdate(
+        sub,
+        {
+            $set: { name },
+        },
+        { new: true },
+    );
 
-  // TODO: Revoke or update token in the session cache if roles changes
+    // Check user
+    if (!user) {
+        res.status(HTTP.CODES.NotFound).send({
+            message: LITERALS.USER_NOT_FOUND,
+        });
+        return;
+    }
 
-  if (!user) {
-    res.status(HTTP.CODES.NotFound).send({ message: LITERALS.USER_NOT_FOUND });
-    return;
-  }
+    res.status(HTTP.CODES.Accepted).send({
+        message: LITERALS.USER_UPDATED,
+        payload: user,
+    });
 
-  res.status(HTTP.CODES.Accepted).send({ message: LITERALS.USER_UPDATED, payload: user });
+    // TODO: Revoke or update token in the session cache if roles changes
 }

@@ -1,28 +1,29 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import speakeasy, { GeneratedSecret } from 'speakeasy';
+import { GeneratedSecret } from 'speakeasy';
 
 import { HTTP } from '../../constants';
 import { LITERALS } from '../../constants/literals';
 import { IUser } from '../../interfaces';
-import { getUserByProperty } from '../../utils';
+import { findUser } from '../users/findUser.handler';
+import { getSecret } from '../../utils';
 
-export async function requestMFASecret(req: FastifyRequest, res: FastifyReply): Promise<void> {
-  const userId = req.user?.sub;
-  const user: IUser | null = await getUserByProperty('_id', userId);
+export async function requestMFASecret(
+    req: FastifyRequest,
+    res: FastifyReply,
+): Promise<void> {
+    // Check if user exists
+    const userId = req.user?.sub;
+    const user: IUser | undefined = await findUser(res, '_id', userId);
+    if (!user) return;
 
-  if (!user) {
-    res.status(HTTP.CODES.NotFound).send({ message: LITERALS.USER_NOT_FOUND });
-    return;
-  }
+    // Set a temporary new MFA secret
+    const secret: GeneratedSecret = getSecret();
+    await req.cache.setMFA(secret.base32, userId);
 
-  const secret: GeneratedSecret = speakeasy.generateSecret();
-
-  await req.cache.setMFA(secret.base32, userId);
-
-  res.status(HTTP.CODES.Accepted).send({
-    message: LITERALS.MFA_SECRET_SEND,
-    payload: {
-      secret: secret.otpauth_url,
-    },
-  });
+    res.status(HTTP.CODES.Accepted).send({
+        message: LITERALS.MFA_SECRET_SEND,
+        payload: {
+            secret: secret.otpauth_url,
+        },
+    });
 }

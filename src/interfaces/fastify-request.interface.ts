@@ -1,9 +1,9 @@
 import { FastifyRequest } from 'fastify';
 
 export interface IFastifyRequestWithDetails extends FastifyRequest {
-  requestDetails?: string;
+    requestDetails?: string;
 }
 
 export interface ILogoutQuery {
-  allsessions?: boolean;
+    allsessions?: boolean;
 }

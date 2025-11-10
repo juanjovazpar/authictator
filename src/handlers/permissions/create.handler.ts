@@ -7,19 +7,19 @@ import { Permission } from '../../models';
 import { LITERALS } from '../../constants/literals';
 
 export const create = async (
-  req: FastifyRequest<{ Body: TPermissionInput }>,
-  res: FastifyReply,
+    req: FastifyRequest<{ Body: TPermissionInput }>,
+    res: FastifyReply,
 ): Promise<Response | void> => {
-  const { name, description } = req.body;
+    // Create new permission
+    const { name, description } = req.body;
+    const newPermission: IPermission = new Permission({
+        name,
+        description,
+    });
+    await newPermission.save();
 
-  const newPermission: IPermission = new Permission({
-    name,
-    description,
-  });
-
-  await newPermission.save();
-
-  res
-    .status(HTTP.CODES.Created)
-    .send({ message: LITERALS.PERMISSION_CREATED, payload: newPermission });
+    res.status(HTTP.CODES.Created).send({
+        message: LITERALS.PERMISSION_CREATED,
+        payload: newPermission,
+    });
 };

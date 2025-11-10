@@ -11,14 +11,14 @@ const adminRoleName = process.env.ADMIN_ROLE_NAME || 'admin';
  * @property {string} name - The role's name.
  */
 const roleNameSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(3, 'Name too short. Min 3 characters long')
-    .max(30, 'Name too long. Max 15 characters long')
-    .refine((val) => val !== adminRoleName, {
-      message: LITERALS.NAME_FORBIDDEN,
-    }),
+    name: z
+        .string()
+        .trim()
+        .min(3, 'Name too short. Min 3 characters long')
+        .max(30, 'Name too long. Max 15 characters long')
+        .refine((val) => val !== adminRoleName, {
+            message: LITERALS.NAME_FORBIDDEN,
+        }),
 });
 
 /**
@@ -27,12 +27,12 @@ const roleNameSchema = z.object({
  * @property {string} description - The role's description.
  */
 const roleDescriptionSchema = z.object({
-  description: z
-    .string()
-    .trim()
-    .min(5, 'Description too short. Min 3 characters long')
-    .max(100, 'Description too long. Max 100 characters long')
-    .optional(),
+    description: z
+        .string()
+        .trim()
+        .min(5, 'Description too short. Min 3 characters long')
+        .max(100, 'Description too long. Max 100 characters long')
+        .optional(),
 });
 
 /**
@@ -41,7 +41,9 @@ const roleDescriptionSchema = z.object({
  * @property {Array<string>} permissions - The role's permissions.
  */
 const permissionsSchema = z.object({
-  permissions: z.array(permissionNameSchema).min(1, 'Role must have at least 1 permission'),
+    permissions: z
+        .array(permissionNameSchema)
+        .min(1, 'Role must have at least 1 permission'),
 });
 
 /**
@@ -52,6 +54,6 @@ const permissionsSchema = z.object({
  * @property {Array<string>} permissions - The role's permissions.
  */
 export const roleSchema = roleNameSchema
-  .extend(roleDescriptionSchema.shape)
-  .extend(permissionsSchema.shape);
+    .extend(roleDescriptionSchema.shape)
+    .extend(permissionsSchema.shape);
 export type TRoleInput = z.infer<typeof roleSchema>;

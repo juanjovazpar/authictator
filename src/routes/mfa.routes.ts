@@ -7,18 +7,18 @@ import { getValidatorHandler } from '../utils';
 import { userMFACodeSchema } from '../schemas';
 
 export default async function (fastify: FastifyInstance) {
-  fastify.route({
-    method: HTTP.METHODS.GET,
-    url: ROUTES.MFA,
-    onRequest: fastify.authenticate,
-    handler: requestMFASecret,
-  });
+    fastify.route({
+        method: HTTP.METHODS.GET,
+        url: ROUTES.MFA,
+        onRequest: fastify.authenticate,
+        handler: requestMFASecret,
+    });
 
-  fastify.route({
-    method: HTTP.METHODS.POST,
-    url: ROUTES.MFA,
-    preValidation: [getValidatorHandler(userMFACodeSchema)],
-    onRequest: fastify.authenticate,
-    handler: confirmMFASecret,
-  });
+    fastify.route({
+        method: HTTP.METHODS.POST,
+        url: ROUTES.MFA,
+        preValidation: [getValidatorHandler(userMFACodeSchema)],
+        onRequest: fastify.authenticate,
+        handler: confirmMFASecret,
+    });
 }

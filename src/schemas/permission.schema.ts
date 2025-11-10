@@ -6,13 +6,13 @@ import { z } from 'zod';
  * @property {string} name - The permission's name.
  */
 export const permissionNameSchema = z
-  .string()
-  .trim()
-  .min(3, 'Name too short. Min 3 characters long')
-  .max(30, 'Name too long. Max 30 characters long');
+    .string()
+    .trim()
+    .min(3, 'Name too short. Min 3 characters long')
+    .max(30, 'Name too long. Max 30 characters long');
 
 const permissionNameSchemaObj = z.object({
-  name: permissionNameSchema,
+    name: permissionNameSchema,
 });
 
 /**
@@ -21,12 +21,12 @@ const permissionNameSchemaObj = z.object({
  * @property {string} description - The permission's description.
  */
 const permissionDescriptionSchema = z.object({
-  description: z
-    .string()
-    .trim()
-    .min(5, 'Description too short. Min 3 characters long')
-    .max(100, 'Description too long. Max 100 characters long')
-    .optional(),
+    description: z
+        .string()
+        .trim()
+        .min(5, 'Description too short. Min 3 characters long')
+        .max(100, 'Description too long. Max 100 characters long')
+        .optional(),
 });
 
 /**
@@ -35,5 +35,7 @@ const permissionDescriptionSchema = z.object({
  * @property {string} name - The permission's name.
  * @property {string} description - The permission's description.
  */
-export const permissionSchema = permissionNameSchemaObj.extend(permissionDescriptionSchema.shape);
+export const permissionSchema = permissionNameSchemaObj.extend(
+    permissionDescriptionSchema.shape,
+);
 export type TPermissionInput = z.infer<typeof permissionSchema>;

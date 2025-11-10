@@ -31,7 +31,7 @@ import { z } from 'zod';
  * @see https://zod.dev for more information about Zod and schema validation.
  */
 export const getValidatorHandler = (schema: z.ZodTypeAny) => {
-  return async (req: FastifyRequest) => {
-    req.body = schema.parse(req.body);
-  };
+    return async (req: FastifyRequest) => {
+        req.body = schema.parse(req.body);
+    };
 };

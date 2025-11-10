@@ -8,6 +8,25 @@
 	},
 	"item": [
 		{
+			"name": "JWT JSON",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{API_URL}}/.well-known/jwks.json",
+					"protocol": "http",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						".well-known",
+						"jwks.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Healthcheck",
 			"request": {
 				"method": "GET",
@@ -86,7 +105,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"token\": \"744079\",\n    \"loginId\": \"39159bd2-a5aa-48fd-b2dd-9933efc612cf\"\n}",
+					"raw": "{\n    \"token\": \"563307\",\n    \"loginId\": \"5360d2a7-c72b-4685-a803-270b27162621\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

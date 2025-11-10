@@ -4,34 +4,43 @@ import { HTTP, PARAMS } from '../../constants';
 import { LITERALS } from '../../constants/literals';
 import { comparePasswords, hashPassword } from '../../utils';
 import { IUser } from '../../interfaces';
-import { getUserByProperty } from '../../utils';
 import { TPasswordInput } from '../../schemas';
+import { findUser } from '../users/findUser.handler';
 
 export const reset = async (
-  req: FastifyRequest<{ Body: TPasswordInput }>,
-  res: FastifyReply,
+    req: FastifyRequest<{ Body: TPasswordInput }>,
+    res: FastifyReply,
 ): Promise<Response | void> => {
-  const { password } = req.body;
-  const { [PARAMS.FORGOT_PASSWORD_TOKEN]: resetPasswordToken } = req.params as {
-    [PARAMS.FORGOT_PASSWORD_TOKEN]: string;
-  };
-  const user: IUser | null = await getUserByProperty('resetPasswordToken', resetPasswordToken);
+    const { password: newPassword } = req.body;
+    const { [PARAMS.FORGOT_PASSWORD_TOKEN]: resetPasswordToken } =
+        req.params as {
+            [PARAMS.FORGOT_PASSWORD_TOKEN]: string;
+        };
 
-  const passwordMatch: boolean = await comparePasswords(password, user.password);
+    // Check if user exists
+    const user: IUser | undefined = await findUser(
+        res,
+        'resetPasswordToken',
+        resetPasswordToken,
+    );
+    if (!user) return;
 
-  if (passwordMatch) {
-    res.send(HTTP.CODES.BadRequest).send({ message: LITERALS.USED_PASSWORD_ERROR });
-    return;
-  }
+    // Check if new password is in used
+    if (await comparePasswords(newPassword, user.password)) {
+        res.send(HTTP.CODES.BadRequest).send({
+            message: LITERALS.USED_PASSWORD_ERROR,
+        });
+        return;
+    }
 
-  const hashedPassword = await hashPassword(password);
+    // Set new password
+    const hashedPassword = await hashPassword(newPassword);
+    user.resetPasswordToken = undefined;
+    user.password = hashedPassword;
+    await user.save();
 
-  user.resetPasswordToken = undefined;
-  user.password = hashedPassword;
-  await user.save();
+    res.status(HTTP.CODES.Accepted).send({ message: LITERALS.PASSWORD_RESET });
 
-  res.status(HTTP.CODES.Accepted).send({ message: LITERALS.PASSWORD_RESET });
-
-  // TODO: Implement send password set mail
-  // await sendPasswordSetMail(user.email);
+    // TODO: Implement send password set mail
+    // await sendPasswordSetMail(user.email);
 };

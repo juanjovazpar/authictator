@@ -9,33 +9,33 @@ import { remove } from '../handlers/roles/remove.handler';
 import { update } from '../handlers/users/update.handler';
 
 export default async function (fastify: FastifyInstance) {
-  fastify.route({
-    method: HTTP.METHODS.GET,
-    url: ROUTES.PERMISSIONS,
-    onRequest: [fastify.authenticate, fastify.requireAdmin],
-    handler: list,
-  });
+    fastify.route({
+        method: HTTP.METHODS.GET,
+        url: ROUTES.PERMISSIONS,
+        onRequest: [fastify.authenticate, fastify.requireAdmin],
+        handler: list,
+    });
 
-  fastify.route({
-    method: HTTP.METHODS.POST,
-    url: ROUTES.PERMISSIONS,
-    preValidation: [getValidatorHandler(permissionSchema)],
-    onRequest: [fastify.authenticate, fastify.requireAdmin],
-    handler: create,
-  });
+    fastify.route({
+        method: HTTP.METHODS.POST,
+        url: ROUTES.PERMISSIONS,
+        preValidation: [getValidatorHandler(permissionSchema)],
+        onRequest: [fastify.authenticate, fastify.requireAdmin],
+        handler: create,
+    });
 
-  fastify.route({
-    method: HTTP.METHODS.PUT,
-    url: ROUTES.PERMISSION,
-    preValidation: [getValidatorHandler(permissionSchema)],
-    onRequest: [fastify.authenticate, fastify.requireAdmin],
-    handler: update,
-  });
+    fastify.route({
+        method: HTTP.METHODS.PUT,
+        url: ROUTES.PERMISSION,
+        preValidation: [getValidatorHandler(permissionSchema)],
+        onRequest: [fastify.authenticate, fastify.requireAdmin],
+        handler: update,
+    });
 
-  fastify.route({
-    method: HTTP.METHODS.DELETE,
-    url: ROUTES.PERMISSION,
-    onRequest: [fastify.authenticate, fastify.requireAdmin],
-    handler: remove,
-  });
+    fastify.route({
+        method: HTTP.METHODS.DELETE,
+        url: ROUTES.PERMISSION,
+        onRequest: [fastify.authenticate, fastify.requireAdmin],
+        handler: remove,
+    });
 }
