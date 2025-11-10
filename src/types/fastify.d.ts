@@ -1,17 +1,17 @@
-import fastify, { FastifyRequest, FastifyReply } from 'fastify';
-import Redis from 'ioredis';
+/* eslint-disable no-unused-vars */
+import { FastifyReply } from 'fastify';
 
 import { IRedisCache, IUserToken } from '../interfaces';
-import { cache } from './cache';
 
 declare module 'fastify' {
-    interface FastifyRequest {
-        user: IUserToken;
-        cache: IRedisCache;
-    }
-    interface FastifyInstance {
-        authenticate: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
-        requireAdmin: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
-        cache: ICache;
-    }
+  interface FastifyRequest {
+    user: IUserToken;
+    cache: IRedisCache;
+  }
+  interface FastifyInstance {
+    authenticate: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
+    requireAdmin: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
+    sendEmail: (to: string, subject: string, text: string) => Promise<void>;
+    cache: ICache;
+  }
 }

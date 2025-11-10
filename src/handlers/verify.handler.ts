@@ -4,10 +4,7 @@ import { IUser } from '../interfaces';
 import User from '../models/user.model';
 import { LITERALS } from '../constants/literals';
 
-export async function verify(
-  req: FastifyRequest,
-  res: FastifyReply,
-): Promise<Response | void> {
+export async function verify(req: FastifyRequest, res: FastifyReply): Promise<Response | void> {
   const { [PARAMS.VERIFY_USER_TOKEN]: verificationToken } = req.params as {
     [PARAMS.VERIFY_USER_TOKEN]: string;
   };
@@ -21,17 +18,13 @@ export async function verify(
   );
 
   if (!user) {
-    res
-      .status(HTTP.CODES.BadRequest)
-      .send({ message: LITERALS.WRONG_VERIFICATION_TOKEN });
+    res.status(HTTP.CODES.BadRequest).send({ message: LITERALS.WRONG_VERIFICATION_TOKEN });
     return;
   }
 
-  res
-    .status(HTTP.CODES.Accepted)
-    .send({ message: LITERALS.VERIFIED_ACCOUNT });
+  res.status(HTTP.CODES.Accepted).send({ message: LITERALS.VERIFIED_ACCOUNT });
 
   // Send email after response so user is not kept waiting
   // TODO: Implement send verification mail
   // await sendVerifiedUserMail(user.email);
-};
+}

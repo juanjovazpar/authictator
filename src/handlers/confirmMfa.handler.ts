@@ -9,29 +9,25 @@ import { TMFACodeInput } from '../schemas';
 
 export async function confirmMFA(
   req: FastifyRequest<{ Body: TMFACodeInput }>,
-  res: FastifyReply
+  res: FastifyReply,
 ): Promise<void> {
   const { token } = req.body;
   const userId: string = req.user?.sub;
   const secret = await req.cache.getMFA(userId);
 
   if (!secret) {
-    res
-      .status(HTTP.CODES.NotFound)
-      .send({ message: LITERALS.MFA_SECRET_EXPIRED });
+    res.status(HTTP.CODES.NotFound).send({ message: LITERALS.MFA_SECRET_EXPIRED });
     return;
   }
 
   const verified: boolean = speakeasy.totp.verify({
     encoding: 'base32',
     secret,
-    token
+    token,
   });
 
   if (!verified) {
-    res
-      .status(HTTP.CODES.BadRequest)
-      .send({ message: LITERALS.MFA_SETUP_UNSUCCESSFULL });
+    res.status(HTTP.CODES.BadRequest).send({ message: LITERALS.MFA_SETUP_UNSUCCESSFULL });
     return;
   }
 
@@ -46,11 +42,9 @@ export async function confirmMFA(
   user.mfaSecret = secret;
   await user.save();
 
-  res
-    .status(HTTP.CODES.Accepted)
-    .send({
-      message: LITERALS.MFA_SETUP_SUCCESSFULLY
-    });
+  res.status(HTTP.CODES.Accepted).send({
+    message: LITERALS.MFA_SETUP_SUCCESSFULLY,
+  });
 
   req.cache.delMFA(userId);
-};
+}

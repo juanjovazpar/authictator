@@ -2,9 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 
 import { HTTP } from '../constants';
 import { LITERALS } from '../constants/literals';
-import {
-  getHashedToken,
-} from '../utils';
+import { getHashedToken } from '../utils';
 import { IUser } from '../interfaces';
 import { User } from '../models';
 import { TEmailInput } from '../schemas';
@@ -24,17 +22,13 @@ export const forgotPassword = async (
   );
 
   if (!user) {
-    res
-      .status(HTTP.CODES.NotFound)
-      .send({ message: LITERALS.USER_NOT_FOUND });
+    res.status(HTTP.CODES.NotFound).send({ message: LITERALS.USER_NOT_FOUND });
     return;
   }
 
   // TODO: Check if MFA is activated - Mandatory for Admins
 
-  res
-    .status(HTTP.CODES.Accepted)
-    .send({ message: LITERALS.RESET_PASSWORD_SENT });
+  res.status(HTTP.CODES.Accepted).send({ message: LITERALS.RESET_PASSWORD_SENT });
 
   // TODO: Implement send reset password mail
   // await sendResetPasswordMail(user.email, hashedResetPasswordToken);

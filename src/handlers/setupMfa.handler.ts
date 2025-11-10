@@ -6,10 +6,7 @@ import { LITERALS } from '../constants/literals';
 import { IUser } from '../interfaces';
 import { getUserByProperty } from '../utils';
 
-export async function setupMFA(
-  req: FastifyRequest,
-  res: FastifyReply
-): Promise<void> {
+export async function setupMFA(req: FastifyRequest, res: FastifyReply): Promise<void> {
   const userId = req.user?.sub;
   const user: IUser | null = await getUserByProperty('_id', userId);
 
@@ -22,12 +19,10 @@ export async function setupMFA(
 
   await req.cache.setMFA(secret.base32, userId);
 
-  res
-    .status(HTTP.CODES.Accepted)
-    .send({
-      message: LITERALS.MFA_SECRET_SEND,
-      payload: {
-        secret: secret.otpauth_url
-      }
-    });
-};
+  res.status(HTTP.CODES.Accepted).send({
+    message: LITERALS.MFA_SECRET_SEND,
+    payload: {
+      secret: secret.otpauth_url,
+    },
+  });
+}

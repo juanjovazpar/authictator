@@ -1,5 +1,5 @@
-import { RequestDetails } from "../models";
-import { IFastifyRequestWithDetails } from "../interfaces";
+import { RequestDetails } from '../models';
+import { IFastifyRequestWithDetails } from '../interfaces';
 
 export const saveRequestDetails = async (req: IFastifyRequestWithDetails) => {
   const requestDetails = req['requestDetails'];

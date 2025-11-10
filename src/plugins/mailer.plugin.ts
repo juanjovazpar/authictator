@@ -23,26 +23,23 @@ export default fp(async function (fastify: FastifyInstance) {
         user: SMTP_USER,
         pass: SMTP_PASS,
       },
-    })
+    });
 
-    fastify.decorate(
-      'sendEmail',
-      async function (to: string, subject: string, text: string) {
-        try {
-          await transporter.sendMail({
-            from: SMTP_FROM,
-            to,
-            subject,
-            text
-          });
-        } catch (err) {
-          // TODO: Abstract logger
-          console.log('Error sending email:', err);
-        }
-      },
-    );
-  } catch (err) {
-    // TODO: Abstract logger
-    console.log('Setting up mailer:', err);
+    fastify.decorate('sendEmail', async function (to: string, subject: string, text: string) {
+      try {
+        await transporter.sendMail({
+          from: SMTP_FROM,
+          to,
+          subject,
+          text,
+        });
+      } catch (error) {
+        fastify.log.info('Error sending email:');
+        fastify.log.error(error);
+      }
+    });
+  } catch (error) {
+    fastify.log.info('Setting up mailer:');
+    fastify.log.error(error);
   }
 });

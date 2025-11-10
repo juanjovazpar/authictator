@@ -14,22 +14,26 @@ const schema: Schema<IRole> = new Schema(
       unique: true,
       index: true,
       validate: {
-        validator: function (value: string) { return value !== adminRoleName; },
+        validator: function (value: string) {
+          return value !== adminRoleName;
+        },
         message: (props) => `Name ${props.value} is forbidden for a role`,
-      }
+      },
     },
     description: {
       type: String,
       trim: true,
     },
-    permissions: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Permission',
-      default: []
-    }],
+    permissions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Permission',
+        default: [],
+      },
+    ],
     deletedAt: {
       type: Date,
-      default: null
+      default: null,
     },
   },
   {
@@ -38,10 +42,7 @@ const schema: Schema<IRole> = new Schema(
   },
 );
 
-schema.index(
-  { name: 1 },
-  { unique: true, partialFilterExpression: { deletedAt: null } }
-);
+schema.index({ name: 1 }, { unique: true, partialFilterExpression: { deletedAt: null } });
 
 schema.methods.toJSON = function () {
   const obj = this.toObject();

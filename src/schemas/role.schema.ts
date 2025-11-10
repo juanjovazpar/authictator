@@ -5,7 +5,7 @@ import { LITERALS } from '../constants/literals';
 
 const adminRoleName = process.env.ADMIN_ROLE_NAME || 'admin';
 
-/**         
+/**
  * Schema for validating a role's name.
  * Ensures the name is a string and does not exceed 30 characters.
  * @property {string} name - The role's name.
@@ -16,9 +16,9 @@ const roleNameSchema = z.object({
     .trim()
     .min(3, 'Name too short. Min 3 characters long')
     .max(30, 'Name too long. Max 15 characters long')
-    .refine(val => val !== adminRoleName, {
+    .refine((val) => val !== adminRoleName, {
       message: LITERALS.NAME_FORBIDDEN,
-    })
+    }),
 });
 
 /**
@@ -41,9 +41,7 @@ const roleDescriptionSchema = z.object({
  * @property {Array<string>} permissions - The role's permissions.
  */
 const permissionsSchema = z.object({
-  permissions: z
-    .array(permissionNameSchema)
-    .min(1, 'Role must have at least 1 permission'),
+  permissions: z.array(permissionNameSchema).min(1, 'Role must have at least 1 permission'),
 });
 
 /**
@@ -53,5 +51,7 @@ const permissionsSchema = z.object({
  * @property {string} description - The role's description.
  * @property {Array<string>} permissions - The role's permissions.
  */
-export const roleSchema = roleNameSchema.extend(roleDescriptionSchema.shape).extend(permissionsSchema.shape);
+export const roleSchema = roleNameSchema
+  .extend(roleDescriptionSchema.shape)
+  .extend(permissionsSchema.shape);
 export type TRoleInput = z.infer<typeof roleSchema>;

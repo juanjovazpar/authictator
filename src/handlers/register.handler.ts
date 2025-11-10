@@ -24,13 +24,7 @@ export async function register(
 
   // Send email after response so user is not kept waiting
   // TODO: Implement send new user mail
-  // @ts-ignore
   if (req.server.sendEmail) {
-    // @ts-ignore
-    req.server.sendEmail({
-      to: "juanjovazpar@gmail.com",
-      subject: "subject",
-      text: "text"
-    });
+    req.server.sendEmail('juanjovazpar@gmail.com', 'subject', 'text');
   }
-};
+}

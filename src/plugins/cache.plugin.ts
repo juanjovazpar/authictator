@@ -9,10 +9,10 @@ export default fp(async function (fastify: FastifyInstance) {
     fastify.decorateRequest('cache', {
       getter() {
         return fastify.cache;
-      }
+      },
     });
-  } catch (err) {
-    // TODO: Abstract logger
-    console.log('Setting up cache:', err);
+  } catch (error) {
+    fastify.log.info('Setting up cache:');
+    fastify.log.error(error);
   }
 });

@@ -4,7 +4,7 @@ import {
   appendStatusToResponse,
   errorHandler,
   requestLogger,
-  saveRequestDetails
+  saveRequestDetails,
 } from '../middlewares';
 
 export default fp(async function (fastify: FastifyInstance) {

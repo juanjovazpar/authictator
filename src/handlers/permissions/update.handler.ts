@@ -26,5 +26,7 @@ export const update = async (
 
   await permission.save();
 
-  res.status(HTTP.CODES.Accepted).send({ message: LITERALS.PERMISSION_UPDATED, payload: permission });
+  res
+    .status(HTTP.CODES.Accepted)
+    .send({ message: LITERALS.PERMISSION_UPDATED, payload: permission });
 };

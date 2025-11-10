@@ -86,9 +86,7 @@ export type TPasswordInput = z.infer<typeof passwordSchema>;
  * @property {string} password - The user's password.
  */
 const passwordLoginSchema = z.object({
-  password: z
-    .string()
-    .trim()
+  password: z.string().trim(),
 });
 
 /**
@@ -106,10 +104,7 @@ export type TLoginInput = z.infer<typeof loginSchema>;
  * @property {Array<string>} roles - The user's roles.
  */
 const rolesSchema = z.object({
-  roles: z
-    .array(z.string())
-    .min(1, 'Roles must have at least 1 role')
-    .optional(),
+  roles: z.array(z.string()).min(1, 'Roles must have at least 1 role').optional(),
 });
 
 /**
@@ -120,7 +115,5 @@ const rolesSchema = z.object({
  * @property {string} password - The user's password.
  * @property {Array<string>} roles - The user's roles.
  */
-export const userSchema = loginSchema
-  .extend(userNameSchema.shape)
-  .extend(rolesSchema.shape);
+export const userSchema = loginSchema.extend(userNameSchema.shape).extend(rolesSchema.shape);
 export type TUserInput = z.infer<typeof userSchema>;

@@ -28,4 +28,3 @@ export const logout = async function (
     message: LITERALS.USER_LOGOUT,
   });
 };
-

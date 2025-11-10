@@ -15,16 +15,14 @@ export const create = async (
   const permissionsIds = await ensurePermissionsExist(permissions);
 
   if (permissionsIds.length < 1) {
-    res
-      .status(HTTP.CODES.BadRequest)
-      .send({ message: LITERALS.ROLE_WITHOUT_PERMISSION });
+    res.status(HTTP.CODES.BadRequest).send({ message: LITERALS.ROLE_WITHOUT_PERMISSION });
     return;
   }
 
   const newRole: IRole = new Role({
     name,
     description,
-    permissions: permissionsIds
+    permissions: permissionsIds,
   });
 
   await newRole.save();

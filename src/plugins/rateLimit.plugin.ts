@@ -16,7 +16,7 @@ export default fp(async function (fastify: FastifyInstance) {
       return {
         statusCode: HTTP.CODES.TooManyRequests,
         error: 'Too Many Requests',
-        message: sprintf(LITERALS.LIMIT_REACHED, context.max, context.after)
+        message: sprintf(LITERALS.LIMIT_REACHED, context.max, context.after),
       };
     },
   });

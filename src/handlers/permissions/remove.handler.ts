@@ -27,4 +27,4 @@ export const remove = async (req: FastifyRequest, res: FastifyReply) => {
   await permission.save();
 
   res.status(HTTP.CODES.Accepted).send({ message: LITERALS.PERMISSION_DELETED });
-}
+};

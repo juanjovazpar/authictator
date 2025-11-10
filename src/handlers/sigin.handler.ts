@@ -30,15 +30,10 @@ export const signin = async function (
     return;
   }
 
-  const passwordMatch: boolean = await comparePasswords(
-    password,
-    user.password,
-  );
+  const passwordMatch: boolean = await comparePasswords(password, user.password);
 
   if (!passwordMatch) {
-    res
-      .status(HTTP.CODES.Unauthorized)
-      .send({ message: LITERALS.INCORRECT_PASSWORD });
+    res.status(HTTP.CODES.Unauthorized).send({ message: LITERALS.INCORRECT_PASSWORD });
     return;
   }
 
@@ -48,7 +43,7 @@ export const signin = async function (
     await req.cache.setLockedLogin(loginId, user._id as string);
     res.status(HTTP.CODES.TemporaryRedirect).send({
       message: LITERALS.MFA_CODE_REQUIRED,
-      payload: loginId
+      payload: loginId,
     });
     return;
   }
@@ -74,33 +69,27 @@ export const mfaSignin = async function (
   const user: IUser | null = await getUserByProperty('_id', userId);
 
   if (!user) {
-    res
-      .status(HTTP.CODES.NotFound)
-      .send({
-        message: LITERALS.USER_NOT_FOUND,
-      });
+    res.status(HTTP.CODES.NotFound).send({
+      message: LITERALS.USER_NOT_FOUND,
+    });
     return;
   }
 
   const secret = user.mfaSecret;
 
   if (!secret) {
-    res
-      .status(HTTP.CODES.NotFound)
-      .send({ message: LITERALS.MFA_SECRET_EXPIRED });
+    res.status(HTTP.CODES.NotFound).send({ message: LITERALS.MFA_SECRET_EXPIRED });
     return;
   }
 
   const verified: boolean = speakeasy.totp.verify({
     encoding: 'base32',
     secret,
-    token
+    token,
   });
 
   if (!verified) {
-    res
-      .status(HTTP.CODES.BadRequest)
-      .send({ message: LITERALS.MFA_SETUP_UNSUCCESSFULL });
+    res.status(HTTP.CODES.BadRequest).send({ message: LITERALS.MFA_SETUP_UNSUCCESSFULL });
     return;
   }
 
@@ -115,11 +104,11 @@ const continueLogin = async function (
   res: FastifyReply,
 ): Promise<Response | void> {
   const jwti: string = getUuid();
-  const sub = user._id
+  const sub = user._id;
   const accessToken: string = req.server.jwt.sign({
     jwti,
     sub,
-    roles: user.roles
+    roles: user.roles,
   });
   // TODO: Implement refresh token
   const refreshToken = req.server.jwt.sign({ sub: user._id });
@@ -129,7 +118,5 @@ const continueLogin = async function (
   user.last_login = new Date();
   await user.save();
 
-  res
-    .status(HTTP.CODES.Accepted)
-    .send({ payload: { accessToken, refreshToken } });
-}
+  res.status(HTTP.CODES.Accepted).send({ payload: { accessToken, refreshToken } });
+};

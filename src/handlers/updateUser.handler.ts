@@ -26,4 +26,4 @@ export async function update(
   }
 
   res.status(HTTP.CODES.Accepted).send({ message: LITERALS.USER_UPDATED, payload: user });
-};
+}

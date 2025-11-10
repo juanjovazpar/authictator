@@ -7,10 +7,7 @@ import { Role } from '../../models';
 import { ensurePermissionsExist } from '../../utils/permissionsExit.utils';
 import { LITERALS } from '../../constants/literals';
 
-export const update = async (
-  req: FastifyRequest<{ Body: TRoleInput }>,
-  res: FastifyReply,
-) => {
+export const update = async (req: FastifyRequest<{ Body: TRoleInput }>, res: FastifyReply) => {
   const { [PARAMS.ROLE_ID]: id } = req.params as {
     [PARAMS.ROLE_ID]: string;
   };
@@ -25,9 +22,7 @@ export const update = async (
   const permissionsIds = await ensurePermissionsExist(permissions);
 
   if (permissionsIds.length < 1) {
-    res
-      .status(HTTP.CODES.BadRequest)
-      .send({ message: LITERALS.ROLE_WITHOUT_PERMISSION });
+    res.status(HTTP.CODES.BadRequest).send({ message: LITERALS.ROLE_WITHOUT_PERMISSION });
     return;
   }
 

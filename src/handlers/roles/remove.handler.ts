@@ -27,4 +27,4 @@ export const remove = async (req: FastifyRequest, res: FastifyReply) => {
   await role.save();
 
   res.status(HTTP.CODES.Accepted).send({ message: LITERALS.ROLE_DELETED });
-}
+};

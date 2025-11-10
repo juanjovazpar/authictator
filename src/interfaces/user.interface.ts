@@ -10,14 +10,14 @@ export interface IUser extends Document {
   resetPasswordToken?: string;
   last_login?: Date;
   deleted?: Date;
-  roles: Schema.Types.ObjectId[]
-  mfaSecret?: string
+  roles: Schema.Types.ObjectId[];
+  mfaSecret?: string;
 }
 
 export interface IUserToken {
-  jwti: string,
-  sub: string,
-  roles: string[],
-  iat: number,
-  exp: number
+  jwti: string;
+  sub: string;
+  roles: string[];
+  iat: number;
+  exp: number;
 }

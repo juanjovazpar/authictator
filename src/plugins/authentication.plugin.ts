@@ -13,7 +13,7 @@ export default fp(async function (fastify: FastifyInstance) {
   await fastify.register(jwt, {
     secret: {
       private: privateKey,
-      public: publicKey
+      public: publicKey,
     },
     sign: { algorithm: 'RS256', expiresIn: '2h' },
   });

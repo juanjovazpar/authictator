@@ -1,7 +1,9 @@
-import { FastifyRequest } from "fastify";
+import { FastifyRequest } from 'fastify';
 
 export interface IFastifyRequestWithDetails extends FastifyRequest {
-    requestDetails?: any;
+  requestDetails?: string;
 }
 
-export interface ILogoutQuery { allsessions?: boolean }
+export interface ILogoutQuery {
+  allsessions?: boolean;
+}

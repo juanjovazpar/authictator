@@ -7,6 +7,8 @@ import { Permission } from '../../models';
 import { LITERALS } from '../../constants/literals';
 
 export const list = async (_: FastifyRequest, res: FastifyReply) => {
-  const payload: IPermission[] = await Permission.find({ deletedAt: null })
-  res.status(HTTP.CODES.Accepted).send({ message: sprintf(LITERALS.PERMISSIONS_FOUND_LENGTH, payload.length), payload });
+  const payload: IPermission[] = await Permission.find({ deletedAt: null });
+  res
+    .status(HTTP.CODES.Accepted)
+    .send({ message: sprintf(LITERALS.PERMISSIONS_FOUND_LENGTH, payload.length), payload });
 };

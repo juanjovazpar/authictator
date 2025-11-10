@@ -30,9 +30,11 @@ const schema: Schema<IUser> = new Schema(
       trim: true,
       required: [true, 'Name is required'],
       validate: {
-        validator: function (value: string) { return value !== adminRoleName; },
+        validator: function (value: string) {
+          return value !== adminRoleName;
+        },
         message: (props) => `Name ${props.value} is forbidden for an user`,
-      }
+      },
     },
     isVerified: {
       type: Boolean,
@@ -53,11 +55,13 @@ const schema: Schema<IUser> = new Schema(
     mfaSecret: {
       type: String,
     },
-    roles: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Role',
-      default: []
-    }],
+    roles: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Role',
+        default: [],
+      },
+    ],
     last_login: {
       type: Date,
     },
@@ -95,7 +99,3 @@ schema.methods.toJSON = function () {
 const User: Model<IUser> = mongoose.model<IUser>('User', schema);
 
 export default User;
-
-export function findOneAndUpdate(arg0: { email: string; }, arg1: { $set: { resetPasswordToken: string; }; }, arg2: { new: boolean; }): IUser | PromiseLike<IUser | null> | null {
-  throw new Error('Function not implemented.');
-}

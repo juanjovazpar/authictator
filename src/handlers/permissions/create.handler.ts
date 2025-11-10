@@ -14,10 +14,12 @@ export const create = async (
 
   const newPermission: IPermission = new Permission({
     name,
-    description
+    description,
   });
 
   await newPermission.save();
 
-  res.status(HTTP.CODES.Created).send({ message: LITERALS.PERMISSION_CREATED, payload: newPermission });
+  res
+    .status(HTTP.CODES.Created)
+    .send({ message: LITERALS.PERMISSION_CREATED, payload: newPermission });
 };

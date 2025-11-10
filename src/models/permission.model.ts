@@ -18,7 +18,7 @@ const schema: Schema<IPermission> = new Schema(
     },
     deletedAt: {
       type: Date,
-      default: null
+      default: null,
     },
   },
   {
@@ -27,10 +27,7 @@ const schema: Schema<IPermission> = new Schema(
   },
 );
 
-schema.index(
-  { name: 1 },
-  { unique: true, partialFilterExpression: { deletedAt: null } }
-);
+schema.index({ name: 1 }, { unique: true, partialFilterExpression: { deletedAt: null } });
 
 schema.methods.toJSON = function () {
   const obj = this.toObject();
