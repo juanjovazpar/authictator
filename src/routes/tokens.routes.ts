@@ -2,8 +2,8 @@ import { FastifyInstance } from 'fastify';
 import { ROUTES, HTTP } from '../constants';
 import { loginSchema, mfaLoginSchema } from '../schemas';
 import { getValidatorHandler } from '../utils/validatorHandler.util';
-import { logout } from '../handlers/logout.handler';
-import { mfaSignin, signin } from '../handlers/sigin.handler';
+import { mfaSignin, signin } from '../handlers/sessions/sigin.handler';
+import { logout } from '../handlers/sessions/logout.handler';
 
 export default async function (fastify: FastifyInstance) {
   fastify.route({

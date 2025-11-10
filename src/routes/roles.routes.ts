@@ -6,7 +6,7 @@ import { roleSchema } from '../schemas';
 import { create } from '../handlers/roles/create.handler';
 import { list } from '../handlers/roles/list.handler';
 import { remove } from '../handlers/roles/remove.handler';
-import { update } from '../handlers/updateUser.handler';
+import { update } from '../handlers/users/update.handler';
 
 export default async function (fastify: FastifyInstance) {
   fastify.route({

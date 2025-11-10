@@ -1,21 +1,24 @@
 import { sprintf } from 'sprintf-js';
-
 import { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
 import ratelimit from '@fastify/rate-limit';
+
 import { HTTP } from '../constants';
 import { LITERALS } from '../constants/literals';
 
+const RATE_LIMIT_MAX: number = Number(process.env.RATE_LIMIT_MAX) || 1000;
+const timeWindow: string = '1 minute';
+
 export default fp(async function (fastify: FastifyInstance) {
   await fastify.register(ratelimit, {
-    max: 1000,
+    max: RATE_LIMIT_MAX,
     ban: 1,
-    timeWindow: '1 minute',
-    allowList: [], // TODO: Add IPs to allow list from cluster pods
+    timeWindow,
+    allowList: [],
     errorResponseBuilder: (_, context) => {
       return {
         statusCode: HTTP.CODES.TooManyRequests,
-        error: 'Too Many Requests',
+        error: LITERALS.TOO_MANY_REQUESTS,
         message: sprintf(LITERALS.LIMIT_REACHED, context.max, context.after),
       };
     },
@@ -26,11 +29,11 @@ export default fp(async function (fastify: FastifyInstance) {
     {
       preHandler: fastify.rateLimit({
         max: 4,
-        timeWindow: '1 minute',
+        timeWindow,
       }),
     },
     function (_, reply) {
-      reply.code(404).send({ message: 'Hello there!' });
+      reply.code(HTTP.CODES.NotFound).send({ message: 'Hello there!' });
     },
   );
 });

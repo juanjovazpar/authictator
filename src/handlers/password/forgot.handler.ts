@@ -1,13 +1,13 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-import { HTTP } from '../constants';
-import { LITERALS } from '../constants/literals';
-import { getHashedToken } from '../utils';
-import { IUser } from '../interfaces';
-import { User } from '../models';
-import { TEmailInput } from '../schemas';
+import { HTTP } from '../../constants';
+import { LITERALS } from '../../constants/literals';
+import { getHashedToken } from '../../utils';
+import { IUser } from '../../interfaces';
+import { User } from '../../models';
+import { TEmailInput } from '../../schemas';
 
-export const forgotPassword = async (
+export const forgot = async (
   req: FastifyRequest<{ Body: TEmailInput }>,
   res: FastifyReply,
 ): Promise<Response | void> => {

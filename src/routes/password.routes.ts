@@ -3,15 +3,15 @@ import { FastifyInstance } from 'fastify';
 import { ROUTES, PARAMS, HTTP } from '../constants';
 import { emailSchema, passwordSchema } from '../schemas/user.schema';
 import { getValidatorHandler } from '../utils/validatorHandler.util';
-import { forgotPassword } from '../handlers/forgot.handler';
-import { resetPassword } from '../handlers/resetPassword.handler';
+import { forgot } from '../handlers/password/forgot.handler';
+import { reset } from '../handlers/password/reset';
 
 export default async function (fastify: FastifyInstance) {
   fastify.route({
     method: HTTP.METHODS.POST,
     url: ROUTES.REQUEST_FORGOT_PASSWORD,
     preValidation: [getValidatorHandler(emailSchema)],
-    handler: forgotPassword,
+    handler: forgot,
   });
 
   fastify.route({
@@ -26,6 +26,6 @@ export default async function (fastify: FastifyInstance) {
       },
     },
     preValidation: [getValidatorHandler(passwordSchema)],
-    handler: resetPassword,
+    handler: reset,
   });
 }

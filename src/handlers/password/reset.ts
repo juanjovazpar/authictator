@@ -1,13 +1,13 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-import { HTTP, PARAMS } from '../constants';
-import { LITERALS } from '../constants/literals';
-import { comparePasswords, hashPassword } from '../utils';
-import { IUser } from '../interfaces';
-import { getUserByProperty } from '../utils';
-import { TPasswordInput } from '../schemas';
+import { HTTP, PARAMS } from '../../constants';
+import { LITERALS } from '../../constants/literals';
+import { comparePasswords, hashPassword } from '../../utils';
+import { IUser } from '../../interfaces';
+import { getUserByProperty } from '../../utils';
+import { TPasswordInput } from '../../schemas';
 
-export const resetPassword = async (
+export const reset = async (
   req: FastifyRequest<{ Body: TPasswordInput }>,
   res: FastifyReply,
 ): Promise<Response | void> => {

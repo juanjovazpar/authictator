@@ -39,4 +39,5 @@ export const LITERALS = {
   MFA_SETUP_UNSUCCESSFULL: 'Token is not verified',
   MFA_SETUP_SUCCESSFULLY: 'You MFA is properly setup now',
   MFA_CODE_REQUIRED: 'A MFA code is required',
+  TOO_MANY_REQUESTS: 'Too Many Requests'
 };

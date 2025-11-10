@@ -1,12 +1,12 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import speakeasy, { GeneratedSecret } from 'speakeasy';
 
-import { HTTP } from '../constants';
-import { LITERALS } from '../constants/literals';
-import { IUser } from '../interfaces';
-import { getUserByProperty } from '../utils';
+import { HTTP } from '../../constants';
+import { LITERALS } from '../../constants/literals';
+import { IUser } from '../../interfaces';
+import { getUserByProperty } from '../../utils';
 
-export async function setupMFA(req: FastifyRequest, res: FastifyReply): Promise<void> {
+export async function requestMFASecret(req: FastifyRequest, res: FastifyReply): Promise<void> {
   const userId = req.user?.sub;
   const user: IUser | null = await getUserByProperty('_id', userId);
 

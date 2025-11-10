@@ -1,13 +1,12 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import speakeasy from 'speakeasy';
 
-import { HTTP } from '../constants';
-import { LITERALS } from '../constants/literals';
-import { IUser } from '../interfaces';
-import { getUserByProperty } from '../utils';
-import { TMFACodeInput } from '../schemas';
+import { HTTP, LITERALS } from '../../constants';
+import { IUser } from '../../interfaces';
+import { getUserByProperty } from '../../utils';
+import { TMFACodeInput } from '../../schemas';
 
-export async function confirmMFA(
+export async function confirmMFASecret(
   req: FastifyRequest<{ Body: TMFACodeInput }>,
   res: FastifyReply,
 ): Promise<void> {

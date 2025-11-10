@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-import { HTTP } from '../constants';
-import { ILogoutQuery } from '../interfaces';
-import { LITERALS } from '../constants/literals';
+import { HTTP } from '../../constants';
+import { ILogoutQuery } from '../../interfaces';
+import { LITERALS } from '../../constants/literals';
 
 export const logout = async function (
   req: FastifyRequest<{ Querystring: ILogoutQuery }>,

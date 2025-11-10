@@ -32,23 +32,28 @@ This project focuses on speed, simplicity, and security, leveraging Fastify’s 
 - **Extensible Design:** Easily add new authentication strategies or data sources.
 
 ## API Overview
-| Endpoint        | Method |Description                                      |
-| --------------- | ------ | ----------------------------------------------- |
-| `/`             | GET    | Health checker.                                 |
-| `/signup`       | POST   | Create a new user                               |
-| `/signin`       | POST   | Sign in and get a JWT token                     |
-| `/verify/{code}`| POST   | Verify user with a verification code            |
-| `/forgot`       | POST   | Request a reset password link                   |
-| `/forgot/{code}`| POST   | Reset password                                  |
-| `/whoami`       | GET    | Retrieve user profile (requires auth)           |
-| `/roles`      | GET    | Retrieve available roles (requires auth)           |
-| `/roles`      | POST   | Create a new role (requires auth)           |
-| `/roles/{id}` | PUT    | Edit an existing role (requires auth)          |
-| `/roles/{id}` | DELETE | Soft-delete a role (requires auth)           |
-| `/permissions`      | GET    | Retrieve available permissions (requires auth)           |
-| `/permissions`      | POST   | Create a new permission (requires auth)           |
-| `/permissions/{id}` | PUT    | Edit an existing permission (requires auth)          |
-| `/permissions/{id}` | DELETE | Soft-delete a permission (requires auth)           |
+| Endpoint             | Method |Description                                      |
+| -------------------- | ------ | ----------------------------------------------- |
+| `/`                  | GET    | Health checker                                  |
+| `/.well-known/jwks.json`| GET | Get the JWT public key                          |
+| `/signup`            | POST   | Create a new user                               |
+| `/signin`            | POST   | Sign in and get a JWT token                     |
+| `/signinmfa`         | POST   | Sign in with a MFA code                         |
+| `/verify/{code}`     | POST   | Verify user with a verification code            |
+| `/mfa`               | GET    | Request a secret to setup MFA                   |
+| `/mfa`               | POST   | Confirm MFA configuration with a temporary code |
+| `/forgot`            | POST   | Request a reset password link                   |
+| `/forgot/{code}`     | POST   | Reset password                                  |
+| `/whoami`            | GET    | Retrieve user profile (requires auth)           |
+| `/roles`             | GET    | Retrieve available roles (requires auth)        |
+| `/roles`             | POST   | Create a new role (requires auth)               |
+| `/roles/{id}`        | PUT    | Edit an existing role (requires auth)           |
+| `/roles/{id}`        | DELETE | Soft-delete a role (requires auth)              |
+| `/permissions`       | GET    | Retrieve available permissions (requires auth)  |
+| `/permissions`       | POST   | Create a new permission (requires auth)         |
+| `/permissions/{id}`  | PUT    | Edit an existing permission (requires auth)     |
+| `/permissions/{id}`  | DELETE | Soft-delete a permission (requires auth)        |
+| `/logout?allsessions`| GET    | Revoke token and destroy session (requires auth)|
 
 Protected endpoints require a valid JWT in the Authorization header.
 
@@ -81,19 +86,38 @@ A pretty simple layers architecture ensures the data validation and consistency 
 Create a .env file in the root directory with your configuration:
 
 ```
-HOST=0.0.0.0
-PORT=3000
-DATABASE_URL=mongodb://localhost:27017/authictator
-DATABASE_PORT=27017
-MONGO_INITDB_ROOT_USERNAME=root
-MONGO_INITDB_ROOT_PASSWORD=password
-JWT_REFRESH_SECRET=your_jwt_secret
-JWT_ACCESS_SECRET=your_jwt_secret
-RATE_LIMIT_MAX=10
-FORCE_MFA=true
-ADMIN_EMAIL=admin@email.com
-ADMIN_PASSWORD=password
-ADMIN_ROLE_NAME=admin
+# Basics
+HOST=
+PORT=
+ADMIN_EMAIL=
+ADMIN_PASSWORD=
+ADMIN_ROLE_NAME=
+DEFAULT_ROLE=
+RATE_LIMIT_MAX=
+# Database
+DATABASE_URL=
+DATABASE_NAME=
+DATABASE_PORT=
+MONGO_INITDB_ROOT_USERNAME=
+MONGO_INITDB_ROOT_PASSWORD=
+# Force MFA to login
+FORCE_MFA=
+# Email sender
+SMTP_HOST=
+SMTP_PORT=
+SMTP_USER=
+SMTP_PASS=
+SMTP_FROM=
+# Redis
+REDIS_HOST=
+REDIS_PORT=
+REDIS_WRITER_USERNAME=
+REDIS_WRITER_PASSWORD=
+REDIS_READER_USERNAME=
+REDIS_READER_PASSWORD=
+# JWT keys
+JWT_PRIVATE_KEY_PATH=
+JWT_PUBLIC_KEY_PATH=
 ```
 
 Give execution access to the redis script:

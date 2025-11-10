@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { HTTP } from '../constants';
-import User from '../models/user.model';
-import { TUserInput } from '../schemas';
-import { LITERALS } from '../constants/literals';
+import { HTTP } from '../../constants';
+import User from '../../models/user.model';
+import { TUserInput } from '../../schemas';
+import { LITERALS } from '../../constants/literals';
 
 export async function update(
   req: FastifyRequest<{ Body: TUserInput }>,

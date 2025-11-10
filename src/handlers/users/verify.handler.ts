@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { PARAMS, HTTP } from '../constants';
-import { IUser } from '../interfaces';
-import User from '../models/user.model';
-import { LITERALS } from '../constants/literals';
+import { PARAMS, HTTP } from '../../constants';
+import { IUser } from '../../interfaces';
+import User from '../../models/user.model';
+import { LITERALS } from '../../constants/literals';
 
 export async function verify(req: FastifyRequest, res: FastifyReply): Promise<Response | void> {
   const { [PARAMS.VERIFY_USER_TOKEN]: verificationToken } = req.params as {

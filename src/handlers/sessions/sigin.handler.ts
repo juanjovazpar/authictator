@@ -1,11 +1,11 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import speakeasy from 'speakeasy';
 
-import { comparePasswords, getUserByProperty, getUuid } from '../utils';
-import { HTTP } from '../constants';
-import { IUser } from '../interfaces';
-import { TLoginInput, TMFALoginInput } from '../schemas';
-import { LITERALS } from '../constants/literals';
+import { comparePasswords, getUserByProperty, getUuid } from '../../utils';
+import { HTTP } from '../../constants';
+import { IUser } from '../../interfaces';
+import { TLoginInput, TMFALoginInput } from '../../schemas';
+import { LITERALS } from '../../constants/literals';
 
 const FORCE_MFA = process.env.FORCE_MFA || false;
 
