@@ -3,9 +3,9 @@ import { FastifyInstance } from 'fastify';
 import { ROUTES, PARAMS, HTTP } from '../constants';
 import { getValidatorHandler } from '../utils';
 import { userSchema } from '../schemas';
-import { whoami } from '../controllers/whoami.controller';
-import { register } from '../controllers/register.controller';
-import { verify } from '../controllers/verify.controller';
+import { whoami } from '../handlers/whoami.handler';
+import { register } from '../handlers/register.handler';
+import { verify } from '../handlers/verify.handler';
 
 export default async function (fastify: FastifyInstance) {
   fastify.route({

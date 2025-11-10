@@ -3,8 +3,8 @@ import { FastifyInstance } from 'fastify';
 import { ROUTES, PARAMS, HTTP } from '../constants';
 import { emailSchema, passwordSchema } from '../schemas/user.schema';
 import { getValidatorHandler } from '../utils/validatorHandler.util';
-import { forgotPassword } from '../controllers/forgot.controller';
-import { resetPassword } from '../controllers/resetPassword.controller';
+import { forgotPassword } from '../handlers/forgot.handler';
+import { resetPassword } from '../handlers/resetPassword.handler';
 
 export default async function (fastify: FastifyInstance) {
   fastify.route({

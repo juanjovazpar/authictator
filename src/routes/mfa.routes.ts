@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify';
 
 import { ROUTES, HTTP } from '../constants';
-import { setupMFA } from '../controllers/setupMfa.controller';
-import { confirmMFA } from '../controllers/confirmMfa.controller';
+import { setupMFA } from '../handlers/setupMfa.handler';
+import { confirmMFA } from '../handlers/confirmMfa.handler';
 import { getValidatorHandler } from '../utils';
 import { userMFACodeSchema } from '../schemas';
 

@@ -1,8 +1,12 @@
 import { FastifyInstance } from 'fastify';
+
 import { ROUTES, HTTP } from '../constants';
 import { getValidatorHandler } from '../utils';
 import { permissionSchema } from '../schemas';
-import { create, list, update, remove } from '../controllers/permissions.controller';
+import { create } from '../handlers/roles/create.handler';
+import { list } from '../handlers/roles/list.handler';
+import { remove } from '../handlers/roles/remove.handler';
+import { update } from '../handlers/updateUser.handler';
 
 export default async function (fastify: FastifyInstance) {
   fastify.route({

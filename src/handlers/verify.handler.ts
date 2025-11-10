@@ -1,4 +1,4 @@
-import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify';
+import { FastifyRequest, FastifyReply } from 'fastify';
 import { PARAMS, HTTP } from '../constants';
 import { IUser } from '../interfaces';
 import User from '../models/user.model';

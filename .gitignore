@@ -2,3 +2,4 @@
 .env
 /dist
 assets/.DS_Store
+/keys

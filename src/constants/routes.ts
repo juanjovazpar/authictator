@@ -10,6 +10,7 @@ const enum ENDPOINTS {
     LOGOUT = '/logout',
     HEALTHZ = '/healthz',
     MFA = '/mfa',
+    JWTS_JSON = '/.well-known/jwks.json'
 }
 
 export enum PARAMS {
@@ -35,4 +36,5 @@ export const ROUTES = {
     LOGOUT: ENDPOINTS.LOGOUT,
     HEALTHZ: ENDPOINTS.HEALTHZ,
     MFA: ENDPOINTS.MFA,
+    JWTS_JSON: ENDPOINTS.JWTS_JSON
 };
