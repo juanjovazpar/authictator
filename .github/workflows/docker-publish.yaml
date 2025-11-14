@@ -3,8 +3,8 @@ name: Build, Publish Docker & Create Release
 on:
   push:
     tags:
-      - '*' 
-      
+      - '*'
+
 jobs:
   build-and-push:
     name: Build and push Docker image to GHCR
@@ -15,7 +15,7 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Log in to GHCR
@@ -28,11 +28,10 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Create and use Docker Buildx builder
+      - name: Create and use Buildx builder
         run: |
-          docker buildx create --name mybuilder --use --driver docker-container
+          docker buildx create --name mybuilder --driver docker-container --use
           docker buildx inspect --bootstrap
-          docker buildx ls
 
       - name: Extract version from tag
         id: vars
@@ -70,7 +69,7 @@ jobs:
         id: vars
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-      - name: Create Release
+      - name: Create Release draft
         uses: actions/create-release@v1
         with:
           tag_name: ${{ steps.vars.outputs.VERSION }}
