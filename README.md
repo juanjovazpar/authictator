@@ -36,12 +36,12 @@ This project focuses on speed, simplicity, and security, leveraging Fastify’s 
 | -------------------- | ------ | ----------------------------------------------- |
 | `/`                  | GET    | Health checker                                  |
 | `/.well-known/jwks.json`| GET | Get the JWT public key                          |
-| `/signup`            | POST   | Create a new user                               |
+| `/signup`            | POST   | Create a new user (may require auth)            |
 | `/signin`            | POST   | Sign in and get a JWT token                     |
 | `/signinmfa`         | POST   | Sign in with a MFA code                         |
 | `/verify/{code}`     | POST   | Verify user with a verification code            |
-| `/mfa`               | GET    | Request a secret to setup MFA                   |
-| `/mfa`               | POST   | Confirm MFA configuration with a temporary code |
+| `/mfa`               | GET    | Request a secret to setup MFA (requires auth)   |
+| `/mfa`               | POST   | Confirm MFA configuration with a temporary code (requires auth) |
 | `/forgot`            | POST   | Request a reset password link                   |
 | `/forgot/{code}`     | POST   | Reset password                                  |
 | `/whoami`            | GET    | Retrieve user profile (requires auth)           |
@@ -144,6 +144,9 @@ ENCRYPTION_KEY=
 
 # Force MFA to login
 FORCE_MFA=
+
+# Allow public signup
+FREE_SIGNUP=
 
 # Email sender
 SMTP_HOST=
