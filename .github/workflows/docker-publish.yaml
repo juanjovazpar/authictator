@@ -30,6 +30,13 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+
+      - name: Create and use buildx builder
+        run: |
+          docker buildx create --use --name mybuilder
+          docker buildx inspect --bootstrap
 
       - name: Extract version from tag
         id: vars
