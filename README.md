@@ -31,6 +31,23 @@ This project focuses on speed, simplicity, and security, leveraging Fastify’s 
 
 - **Extensible Design:** Easily add new authentication strategies or data sources.
 
+## Sessions Management
+
+
+![Session Management](./assets/images/sessions-management.png)
+
+### Redis cache
+
+Redis will be use as a temporary cache to store sessions, MFA secrets candidates and locked logins process. The access to this cache is controlled by two type of users `writer` and `reader`. Readers will have access only to the sessions collection to validate the active session linked to the token.
+
+This users are configured by a template and environemnt variables. This templare is used in the redis service of the docker-compose:
+
+````
+user default off
+user ${REDIS_WRITER_USERNAME} on >${REDIS_WRITER_PASSWORD} ~* +@all
+user ${REDIS_READER_USERNAME} on >${REDIS_READER_PASSWORD} ~sessions:* +@read
+````
+
 ## API Overview
 | Endpoint             | Method |Description                                      |
 | -------------------- | ------ | ----------------------------------------------- |
@@ -187,16 +204,4 @@ npm run migrate
 A command to generate this keys and endpoint is available with npm:
 ````
 npm run setup:keys
-````
-
-#### Redis access
-
-Redis will be use as a temporary cache to store sessions, MFA secrets candidates and locked logins process. The access to this cache is controlled by two type of users `writer` and `reader`. Readers will have access only to the sessions collection to validate the active session linked to the token.
-
-This users are configured by a template and environemnt variables. This templare is used in the redis service of the docker-compose:
-
-````
-user default off
-user ${REDIS_WRITER_USERNAME} on >${REDIS_WRITER_PASSWORD} ~* +@all
-user ${REDIS_READER_USERNAME} on >${REDIS_READER_PASSWORD} ~sessions:* +@read
 ````
