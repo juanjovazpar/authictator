@@ -26,6 +26,9 @@ jobs:
         id: vars
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
+      - name: Prune Docker builder (clean build)
+        run: docker builder prune -af
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -33,6 +36,7 @@ jobs:
           file: ./Dockerfile
           push: true
           platforms: linux/amd64
+          no-cache: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/authictator:${{ steps.vars.outputs.VERSION }}
             ghcr.io/${{ github.repository_owner }}/authictator:latest
