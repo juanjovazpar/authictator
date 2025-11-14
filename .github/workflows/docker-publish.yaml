@@ -3,8 +3,8 @@ name: Build, Publish Docker & Create Release
 on:
   push:
     tags:
-      - '*'
-
+      - '*' 
+      
 jobs:
   build-and-push:
     name: Build and push Docker image to GHCR
@@ -28,20 +28,15 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          install: true
-
-      - name: Create and use buildx builder
+      - name: Create and use Docker Buildx builder
         run: |
-          docker buildx create --use --name mybuilder
+          docker buildx create --name mybuilder --use --driver docker-container
           docker buildx inspect --bootstrap
+          docker buildx ls
 
       - name: Extract version from tag
         id: vars
-        run: |
-          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -54,7 +49,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/authictator:${{ steps.vars.outputs.VERSION }}
             ghcr.io/${{ github.repository_owner }}/authictator:latest
 
-      - name: Make image public
+      - name: Make GHCR image public
         run: |
           curl -X PATCH \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
@@ -73,10 +68,9 @@ jobs:
     steps:
       - name: Extract version from tag
         id: vars
-        run: |
-          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-      - name: Create GitHub Release
+      - name: Create Release
         uses: actions/create-release@v1
         with:
           tag_name: ${{ steps.vars.outputs.VERSION }}
@@ -86,7 +80,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate Release Notes (GitHub API)
+      - name: Generate release notes from commits
         uses: actions/github-script@v7
         with:
           script: |
@@ -96,7 +90,6 @@ jobs:
               repo: context.repo.repo,
               tag_name: version
             });
-
             await github.rest.repos.updateRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
