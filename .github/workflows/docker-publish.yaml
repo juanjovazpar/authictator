@@ -7,16 +7,13 @@ on:
 
 jobs:
   build-and-push:
-    name: Build and push Docker image to GHCR
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       packages: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -24,17 +21,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Create and use Buildx builder
-        run: |
-          docker buildx create --name mybuilder --driver docker-container --use
-          docker buildx inspect --bootstrap
 
       - name: Extract version from tag
         id: vars
@@ -46,7 +32,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           tags: |
             ghcr.io/${{ github.repository_owner }}/authictator:${{ steps.vars.outputs.VERSION }}
             ghcr.io/${{ github.repository_owner }}/authictator:latest
@@ -60,13 +46,9 @@ jobs:
             -d '{"visibility":"public"}'
 
   create-release:
-    name: Create GitHub Release
     runs-on: ubuntu-latest
     needs: build-and-push
-
-    permissions:
-      contents: write
-
+    permissions: contents: write
     steps:
       - name: Extract version from tag
         id: vars
